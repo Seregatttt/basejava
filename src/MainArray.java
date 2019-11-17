@@ -4,15 +4,16 @@ import java.io.InputStreamReader;
 
 /**
  * Interactive test for ArrayStorage implementation
+ * *
  * (just run, no need to understand)
  */
 public class MainArray {
-	private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+	static ArrayStorage arrayStorage = new ArrayStorage();
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		Resume r;
-		ArrayStorage arrayStorage = new ArrayStorage();
+
 		while (true) {
 			System.out.print("Введите одну из команд - (list | save uuid | delete uuid | get uuid | clear | exit): ");
 			String[] params = reader.readLine().trim().toLowerCase().split(" ");
@@ -26,7 +27,7 @@ public class MainArray {
 			}
 			switch (params[0]) {
 				case "list":
-					arrayStorage.list();
+					printAll();
 					break;
 				case "size":
 					System.out.println("size = " + arrayStorage.size());
@@ -35,11 +36,11 @@ public class MainArray {
 					r = new Resume();
 					r.uuid = uuid;
 					arrayStorage.save(r);
-					arrayStorage.list();
+					printAll();
 					break;
 				case "delete":
 					arrayStorage.delete(uuid);
-					arrayStorage.list();
+					printAll();
 					break;
 				case "get":
 					if (arrayStorage.get(uuid) == null) {
@@ -50,7 +51,7 @@ public class MainArray {
 					break;
 				case "clear":
 					arrayStorage.clear();
-					arrayStorage.list();
+					printAll();
 					break;
 				case "exit":
 					return;
@@ -62,7 +63,7 @@ public class MainArray {
 	}
 
 	static void printAll() {
-		Resume[] all = ARRAY_STORAGE.getAll();
+		Resume[] all = arrayStorage.getAll();
 		System.out.println("----------------------------");
 		if (all.length == 0) {
 			System.out.println("Empty");

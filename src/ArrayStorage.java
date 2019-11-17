@@ -2,6 +2,8 @@ import java.util.Arrays;
 
 /**
  * Array based storage for Resumes
+ *
+ * varning comment
  */
 public class ArrayStorage {
 	private Resume[] storage = new Resume[10000];
@@ -49,7 +51,7 @@ public class ArrayStorage {
 	 */
 
 	public Resume[] getAll() {
-		return Arrays.copyOf(storage,indexStorage);
+		return Arrays.copyOf(storage, indexStorage);
 	}
 
 	public int size() {
