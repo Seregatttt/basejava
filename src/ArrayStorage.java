@@ -1,30 +1,66 @@
+import java.util.Arrays;
+
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
+	private Resume[] storage = new Resume[10000];
+	private int indexStorage;
 
-    void clear() {
-    }
+	void clear() {
+		Arrays.fill(storage, null);
+		indexStorage = 0;
+	}
 
-    void save(Resume r) {
-    }
+	public void save(Resume r) {
+		storage[indexStorage] = r;
+		indexStorage++;
+	}
 
-    Resume get(String uuid) {
-        return null;
-    }
+	public Resume get(String uuid) {
+		for (int i = 0; i < indexStorage; i++) {
+			if (storage[i].toString().equals(uuid)) {
+				return storage[i];
+			}
+		}
+		return null;
+	}
 
-    void delete(String uuid) {
-    }
+	void delete(String uuid) {
+		boolean checkDelete = false;
+		for (int i = 0; i < indexStorage; i++) {
+			if (storage[i].toString().equals(uuid)) {
+				storage[i].uuid = null;
+				checkDelete = true;
+			}
+			if (checkDelete) {
+				if (i + 1 < indexStorage) {
+					storage[i].uuid = storage[i + 1].uuid;
+				}
+			}
+		}
+		if (checkDelete) {
+			indexStorage--;
+		}
+	}
 
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
-    Resume[] getAll() {
-        return new Resume[0];
-    }
+	/**
+	 * @return array, contains only Resumes in storage (without null)
+	 */
 
-    int size() {
-        return 0;
-    }
+	public Resume[] getAll() {
+		return Arrays.copyOf(storage,indexStorage);
+	}
+
+	public int size() {
+		return indexStorage;
+	}
+
+	public void list() {
+		for (int i = 0; i < indexStorage; i++) {
+			System.out.println(storage[i].toString());
+		}
+	}
+
+
 }
