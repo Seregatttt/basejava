@@ -63,6 +63,4 @@ public class ArrayStorage {
 			System.out.println(storage[i].toString());
 		}
 	}
-
-
 }
