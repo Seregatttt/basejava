@@ -1,6 +1,9 @@
+import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.ArrayStorage;
+
 /**
- * Test for your ArrayStorage implementation
- *
+ * Test for your com.urise.webapp.storage.ArrayStorage implementation
+ * <p>
  * first lesson basejava
  */
 public class MainTestArrayStorage {
@@ -8,21 +11,21 @@ public class MainTestArrayStorage {
 
 	public static void main(String[] args) {
 		Resume r1 = new Resume();
-		r1.uuid = "uuid1";
+		r1.setUuid("uuid1");
 		Resume r2 = new Resume();
-		r2.uuid = "uuid2";
+		r2.setUuid("uuid2");
 		Resume r3 = new Resume();
-		r3.uuid = "uuid3";
+		r3.setUuid("uuid3");
 
 		arrayStorage.save(r1);
 		arrayStorage.save(r2);
 		arrayStorage.save(r3);
 
-		System.out.println("Get r1: " + arrayStorage.get(r1.uuid));
+		System.out.println("Get r1: " + arrayStorage.get(r1.getUuid()));
 		System.out.println("Size: " + arrayStorage.size());
 		System.out.println("Get dummy: " + arrayStorage.get("dummy"));
 		printAll();
-		arrayStorage.delete(r1.uuid);
+		arrayStorage.delete(r1.getUuid());
 		printAll();
 		arrayStorage.clear();
 		printAll();
