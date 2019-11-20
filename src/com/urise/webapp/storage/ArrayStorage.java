@@ -11,52 +11,45 @@ import java.util.Scanner;
  * varning comment
  */
 public class ArrayStorage {
-	private Resume[] storage = new Resume[10000];
+	private Resume[] storage = new Resume[10_000];
 	private int indexStorage;
 
 	public void clear() {
-		Arrays.fill(storage, null);
+		Arrays.fill(storage, 0, indexStorage, null);
 		indexStorage = 0;
 	}
 
-	public void save(Resume r) {
-		if (indexStorage + 1 >= 10000) {
+	public void save(Resume resume) {
+		if (indexStorage >= storage.length) {
 			System.out.println("indexStorage is overflow !!!");
 			return;
 		}
-		if (checkResume(r.toString())) {
-			System.out.println("com.urise.webapp.model.Resume  already exist !!!");
+		if (checkResume(resume.getUuid()) >= 0) {
+			System.out.println("Resume " + resume.getUuid() + " already exist !!!");
 			return;
 		}
-		storage[indexStorage] = r;
+		storage[indexStorage] = resume;
 		indexStorage++;
 	}
 
 	public Resume get(String uuid) {
-		if (!checkResume(uuid)) {
-			System.out.println("com.urise.webapp.model.Resume not found !!!");
-			return null;
+		int idx = checkResume(uuid);
+		if (idx >= 0) {
+			return storage[idx];
 		}
-		for (int i = 0; i < indexStorage; i++) {
-			if (storage[i].toString().equals(uuid)) {
-				return storage[i];
-			}
-		}
+		System.out.println("Resume " + uuid + " not found !!!");
 		return null;
 	}
 
 	public void delete(String uuid) {
-		if (!checkResume(uuid)) {
-			System.out.println("Resume not found !!!");
+		int idx = checkResume(uuid);
+		if (idx < 0) {
+			System.out.println("Resume " + uuid + " not found !!!");
 			return;
 		}
-		for (int i = 0; i < indexStorage; i++) {
-			if (storage[i].toString().equals(uuid)) {
-				storage[i].setUuid(storage[indexStorage - 1].getUuid());
-				storage[indexStorage - 1].setUuid(null);
-				indexStorage--;
-			}
-		}
+		storage[idx].setUuid(storage[indexStorage - 1].getUuid());
+		storage[indexStorage - 1].setUuid(null);
+		indexStorage--;
 	}
 
 	/**
@@ -71,33 +64,24 @@ public class ArrayStorage {
 		return indexStorage;
 	}
 
-	public void list() {
+	private int checkResume(String uuid) {
 		for (int i = 0; i < indexStorage; i++) {
-			System.out.println(storage[i].toString());
-		}
-	}
-
-	public boolean checkResume(String uuid) {
-		for (int i = 0; i < indexStorage; i++) {
-			if (storage[i].toString().equals(uuid)) {
-				return true;
+			if (storage[i].getUuid().equals(uuid)) {
+				return i;
 			}
 		}
-		return false;
+		return -1;
 	}
 
-	public void update(Resume r) {
-		System.out.println("Input com.urise.webapp.model.Resume for replace:");
+	public void update(Resume resume) {
+		System.out.println("Input Resume for replace:");
 		Scanner scan = new Scanner(System.in);
 		String value = scan.next();
-		if (!checkResume(value)) {
-			System.out.println("com.urise.webapp.model.Resume for replace not found !!!");
+		int idx = checkResume(value);
+		if (idx < 0) {
+			System.out.println("Resume " + value + " for replace not found !!!");
 			return;
 		}
-		for (int i = 0; i < indexStorage; i++) {
-			if (storage[i].toString().equals(value)) {
-				storage[i].setUuid(r.toString());
-			}
-		}
+		storage[idx].setUuid(resume.getUuid());
 	}
 }
