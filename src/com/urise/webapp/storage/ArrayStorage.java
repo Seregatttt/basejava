@@ -47,8 +47,8 @@ public class ArrayStorage {
 			System.out.println("Resume " + uuid + " not found !!!");
 			return;
 		}
-		storage[idx].setUuid(storage[indexStorage - 1].getUuid());
-		storage[indexStorage - 1].setUuid(null);
+		storage[idx] = storage[indexStorage - 1];
+		storage[indexStorage - 1] = null;
 		indexStorage--;
 	}
 
@@ -64,6 +64,15 @@ public class ArrayStorage {
 		return indexStorage;
 	}
 
+	public void update(Resume resume) {
+		int idx = checkResume(resume.getUuid());
+		if (idx < 0) {
+			System.out.println("Resume " + resume.getUuid() + " for update not found !!!");
+			return;
+		}
+		storage[idx] = resume;
+	}
+
 	private int checkResume(String uuid) {
 		for (int i = 0; i < indexStorage; i++) {
 			if (storage[i].getUuid().equals(uuid)) {
@@ -71,17 +80,5 @@ public class ArrayStorage {
 			}
 		}
 		return -1;
-	}
-
-	public void update(Resume resume) {
-		System.out.println("Input Resume for replace:");
-		Scanner scan = new Scanner(System.in);
-		String value = scan.next();
-		int idx = checkResume(value);
-		if (idx < 0) {
-			System.out.println("Resume " + value + " for replace not found !!!");
-			return;
-		}
-		storage[idx].setUuid(resume.getUuid());
 	}
 }
