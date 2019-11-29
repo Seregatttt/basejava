@@ -30,7 +30,6 @@ public abstract class AbstractArrayStorage implements Storage {
 
 	public void save(Resume resume) {
 		int idx = getIndex(resume.getUuid());
-		//System.out.println("idx=" + idx);
 
 		if (size >= storage.length) {
 			throw new StorageException("indexStorage is overflow !!!", resume.getUuid());
