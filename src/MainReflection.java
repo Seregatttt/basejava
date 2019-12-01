@@ -2,10 +2,12 @@
 import com.urise.webapp.model.Resume;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class MainReflection {
 
-	public static void main(String[] args) throws IllegalAccessException {
+	public static void main(String[] args) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		Resume r = new Resume();
 		Field field = r.getClass().getDeclaredFields()[0];
 		field.setAccessible(true);
@@ -16,5 +18,9 @@ public class MainReflection {
 
 		// TODO : invoke r.toString via reflection
 		System.out.println("field.toString()= " + field.get(r).toString());
+
+		Method methods = r.getClass().getMethod("toString");
+		Object res = methods.invoke(r);
+		System.out.println(res);
 	}
 }
