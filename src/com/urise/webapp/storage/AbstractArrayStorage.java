@@ -10,7 +10,7 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes
  */
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
 	static final int STORAGE_LIMIT = 10_000;
 	Resume[] storage = new Resume[STORAGE_LIMIT];
 	int size = 0;
@@ -59,7 +59,6 @@ public abstract class AbstractArrayStorage implements Storage {
 			size--;
 		}
 	}
-
 	public Resume[] getAll() {
 		return Arrays.copyOfRange(storage, 0, size);
 	}
@@ -68,9 +67,5 @@ public abstract class AbstractArrayStorage implements Storage {
 		return size;
 	}
 
-	protected abstract int getIndex(String uuid);
-
 	protected abstract void insert(Resume resume, int idx);
-
-	protected abstract void remove(int idx);
 }
