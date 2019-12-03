@@ -59,6 +59,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 			size--;
 		}
 	}
+
 	public Resume[] getAll() {
 		return Arrays.copyOfRange(storage, 0, size);
 	}
@@ -68,4 +69,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 	}
 
 	protected abstract void insert(Resume resume, int idx);
+
+	protected abstract void remove(int idx);
+
+	protected abstract int getIndex(String uuid);
 }

@@ -1,11 +1,14 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class ListStorage extends AbstractStorage {
-	ArrayList storage = new ArrayList();
+	private Collection storage = new ArrayList();
+
 
 	@Override
 	public void clear() {
@@ -14,7 +17,8 @@ public class ListStorage extends AbstractStorage {
 
 	@Override
 	public void update(Resume resume) {
-		storage.set(0,resume);
+		int idx = ((ArrayList) storage).indexOf(resume);
+		Object ob = ((ArrayList) storage).set(idx, resume);
 	}
 
 	@Override
@@ -25,33 +29,27 @@ public class ListStorage extends AbstractStorage {
 	@Override
 	public Resume get(String uuid) {
 		Resume resume = new Resume(uuid);
-		return (Resume) storage.get(storage.indexOf(resume));
+		int idx = ((ArrayList) storage).indexOf(resume);
+		return (Resume) ((ArrayList) storage).get(idx);
 	}
 
 	@Override
 	public void delete(String uuid) {
 		Resume resume = new Resume(uuid);
-		storage.remove(storage.indexOf(resume));
+		int idx = ((ArrayList) storage).indexOf(resume);
+		Object ob = ((ArrayList) storage).remove(idx);
+
 	}
 
 	@Override
 	public Resume[] getAll() {
+		//help my please.
+		// return (Object[]) storage.toArray(); ok ???
 		return null;
 	}
 
 	@Override
 	public int size() {
 		return storage.size();
-	}
-
-	@Override
-	protected int getIndex(String uuid) {
-		Resume resume = new Resume(uuid);
-		return storage.indexOf(resume);
-	}
-
-	@Override
-	protected void remove(int idx) {
-		storage.remove(idx);
 	}
 }

@@ -1,17 +1,20 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.exception.ExistStorageException;
-import com.urise.webapp.exception.NotExistStorageException;
-import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
-
-import java.util.Arrays;
 
 public abstract class AbstractStorage implements Storage {
 
-	protected Arrays storage;
+	public abstract void clear();
 
-	protected abstract int getIndex(String uuid);
+	public abstract void update(Resume resume);
 
-	protected abstract void remove(int idx);
+	public abstract void save(Resume resume);
+
+	public abstract Resume get(String uuid);
+
+	public abstract void delete(String uuid);
+
+	public abstract Resume[] getAll();
+
+	public abstract int size();
 }
