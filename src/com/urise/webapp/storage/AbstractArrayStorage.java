@@ -1,7 +1,5 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.exception.ExistStorageException;
-import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
@@ -15,49 +13,32 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 	Resume[] storage = new Resume[STORAGE_LIMIT];
 	int size = 0;
 
-	public void clear() {
+	public void doClear() {
 		Arrays.fill(storage, 0, size, null);
 		size = 0;
 	}
 
-	public void update(Resume resume) {
-		int idx = getIndex(resume.getUuid());
-		if (idx < 0) {
-			throw new NotExistStorageException(resume.getUuid());
-		}
+	public void doUpdate(Resume resume, int idx) {
 		storage[idx] = resume;
 	}
 
-	public void save(Resume resume) {
-		int idx = getIndex(resume.getUuid());
-
+	public void doSave(Resume resume, int idx) {
 		if (size >= storage.length) {
 			throw new StorageException("indexStorage is overflow !!!", resume.getUuid());
-		} else if (idx < 0) {
+		} else  {
 			insert(resume, idx);
 			size++;
-		} else {
-			throw new ExistStorageException(resume.getUuid());
 		}
 	}
 
-	public Resume get(String uuid) {
-		int idx = getIndex(uuid);
-		if (idx < 0) {
-			throw new NotExistStorageException(uuid);
-		}
+	public Resume doGet(int idx) {
 		return storage[idx];
 	}
 
-	public void delete(String uuid) {
-		int idx = getIndex(uuid);
-		if (idx < 0) {
-			throw new NotExistStorageException(uuid);
-		} else {
-			remove(idx);
-			storage[size - 1] = null;
-			size--;
-		}
+	public void doDelete(int idx) {
+		remove(idx);
+		storage[size - 1] = null;
+		size--;
 	}
 
 	public Resume[] getAll() {
@@ -67,10 +48,4 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 	public int size() {
 		return size;
 	}
-
-	protected abstract void insert(Resume resume, int idx);
-
-	protected abstract void remove(int idx);
-
-	protected abstract int getIndex(String uuid);
 }

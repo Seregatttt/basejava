@@ -1,55 +1,64 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 public class ListStorage extends AbstractStorage {
-	private Collection storage = new ArrayList();
+	private List<Resume> storage = new ArrayList<>();
 
+	public void print() {
+		System.out.println(storage);
+	}
 
 	@Override
-	public void clear() {
+	public void doClear() {
 		storage.clear();
 	}
 
 	@Override
-	public void update(Resume resume) {
-		int idx = ((ArrayList) storage).indexOf(resume);
-		Object ob = ((ArrayList) storage).set(idx, resume);
+	public void doUpdate(Resume resume, int idx) {
+		Object ob = storage.set(idx, resume);
 	}
 
 	@Override
-	public void save(Resume resume) {
+	protected void doSave(Resume resume, int idx) {
 		storage.add(resume);
 	}
 
 	@Override
-	public Resume get(String uuid) {
-		Resume resume = new Resume(uuid);
-		int idx = ((ArrayList) storage).indexOf(resume);
-		return (Resume) ((ArrayList) storage).get(idx);
+	public Resume doGet(int idx) {
+		return (Resume) storage.get(idx);
 	}
 
 	@Override
-	public void delete(String uuid) {
-		Resume resume = new Resume(uuid);
-		int idx = ((ArrayList) storage).indexOf(resume);
-		Object ob = ((ArrayList) storage).remove(idx);
-
+	public void doDelete(int idx) {
+		Object ob = storage.remove(idx);
 	}
 
 	@Override
 	public Resume[] getAll() {
-		//help my please.
-		// return (Object[]) storage.toArray(); ok ???
-		return null;
+		return storage.toArray(new Resume[storage.size()]);
 	}
 
 	@Override
 	public int size() {
 		return storage.size();
+	}
+
+	protected void insert(Resume resume, int idx) {
+		storage.add(resume);
+	}
+
+	protected void remove(int idx) {
+	}
+
+	protected int getIndex(String uuid) {
+		return getIndex(new Resume(uuid));
+	}
+
+	protected int getIndex(Resume resume) {
+		return storage.lastIndexOf(resume);
 	}
 }
