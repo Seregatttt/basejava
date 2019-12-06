@@ -8,18 +8,14 @@ import java.util.List;
 public class ListStorage extends AbstractStorage {
 	private List<Resume> storage = new ArrayList<>();
 
-	public void print() {
-		System.out.println(storage);
-	}
-
 	@Override
-	public void doClear() {
+	public void clear() {
 		storage.clear();
 	}
 
 	@Override
 	public void doUpdate(Resume resume, int idx) {
-		Object ob = storage.set(idx, resume);
+		storage.set(idx, resume);
 	}
 
 	@Override
@@ -29,12 +25,12 @@ public class ListStorage extends AbstractStorage {
 
 	@Override
 	public Resume doGet(int idx) {
-		return (Resume) storage.get(idx);
+		return storage.get(idx);
 	}
 
 	@Override
 	public void doDelete(int idx) {
-		Object ob = storage.remove(idx);
+		storage.remove(idx);
 	}
 
 	@Override
@@ -47,18 +43,7 @@ public class ListStorage extends AbstractStorage {
 		return storage.size();
 	}
 
-	protected void insert(Resume resume, int idx) {
-		storage.add(resume);
-	}
-
-	protected void remove(int idx) {
-	}
-
 	protected int getIndex(String uuid) {
-		return getIndex(new Resume(uuid));
-	}
-
-	protected int getIndex(Resume resume) {
-		return storage.lastIndexOf(resume);
+		return storage.lastIndexOf(new Resume(uuid));
 	}
 }

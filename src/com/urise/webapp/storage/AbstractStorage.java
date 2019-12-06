@@ -6,10 +6,6 @@ import com.urise.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
 
-	public void clear() {
-		doClear();
-	}
-
 	public void update(Resume resume) {
 		int idx = getIndex(resume.getUuid());
 		if (idx < 0) {
@@ -45,19 +41,13 @@ public abstract class AbstractStorage implements Storage {
 		}
 	}
 
-	protected abstract void doClear();
-
 	protected abstract void doUpdate(Resume resume, int idx);
 
 	protected abstract void doSave(Resume resume, int idx);
 
-	public abstract Resume doGet(int idx);
+	protected abstract Resume doGet(int idx);
 
-	public abstract void doDelete(int idx);
-
-	protected abstract void insert(Resume resume, int idx);
-
-	protected abstract void remove(int idx);
+	protected abstract void doDelete(int idx);
 
 	protected abstract int getIndex(String uuid);
 }

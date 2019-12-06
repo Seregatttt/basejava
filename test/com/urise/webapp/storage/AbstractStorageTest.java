@@ -11,7 +11,7 @@ import static com.urise.webapp.storage.AbstractArrayStorage.STORAGE_LIMIT;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
-public  class AbstractStorageTest {
+public abstract class AbstractStorageTest {
 	private Storage storage;
 	//private static Storage storage = new ListStorage(); //for local test
 	private static final String UUID_1 = "uuid1";
@@ -43,7 +43,7 @@ public  class AbstractStorageTest {
 	@Test
 	public void update() throws Exception {
 		storage.update(RESUME_3);
-		assertTrue(RESUME_3 == storage.get(UUID_3));
+		assertEquals(RESUME_3, storage.get(UUID_3));
 	}
 
 	@Test(expected = NotExistStorageException.class)
@@ -54,13 +54,14 @@ public  class AbstractStorageTest {
 	@Test
 	public void save() throws Exception {
 		storage.save(RESUME_4);
-		assertEquals(4, storage.size());
+		assertEquals(RESUME_4, storage.get(UUID_4));
 	}
 
 	@Test(expected = ExistStorageException.class)
 	public void saveExistResume() throws Exception {
 		storage.save(RESUME_3);
 	}
+
 	//@Ignore //only array
 	@Test(expected = StorageException.class)
 	public void saveOverflowResume() throws Exception {
@@ -77,19 +78,18 @@ public  class AbstractStorageTest {
 
 	@Test
 	public void get() throws Exception {
-		Resume resume = storage.get(UUID_1);
-		assertEquals(resume,RESUME_1);
+		assertEquals(RESUME_1, storage.get(UUID_1));
 	}
 
 	@Test(expected = NotExistStorageException.class)
 	public void getNotExist() throws Exception {
-		Resume resume = storage.get("dummy");
+		storage.get("dummy");
 	}
 
-	@Test
+	@Test(expected = NotExistStorageException.class)
 	public void delete() throws Exception {
 		storage.delete(UUID_3);
-		assertEquals(2,storage.size());
+		storage.get(UUID_3);
 	}
 
 	@Test(expected = NotExistStorageException.class)
@@ -100,7 +100,9 @@ public  class AbstractStorageTest {
 	@Test
 	public void getAll() throws Exception {
 		Resume[] resumes = storage.getAll();
-		assertEquals(3, resumes.length);
+		for (int i = 0; i < storage.size(); i++) {
+			assertEquals(new Resume("uuid" + (i + 1)), resumes[i]);
+		}
 	}
 
 	@Test
