@@ -31,11 +31,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 		}
 	}
 
-	public Resume doGet(int idx) {
+	public Resume doGet(int idx, String uuid) {
 		return storage[idx];
 	}
 
-	public void doDelete(int idx) {
+	public void doDelete(int idx, String uuid) {
 		remove(idx);
 		storage[size - 1] = null;
 		size--;

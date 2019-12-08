@@ -24,12 +24,12 @@ public class ListStorage extends AbstractStorage {
 	}
 
 	@Override
-	public Resume doGet(int idx) {
+	public Resume doGet(int idx, String uuid) {
 		return storage.get(idx);
 	}
 
 	@Override
-	public void doDelete(int idx) {
+	public void doDelete(int idx, String uuid) {
 		storage.remove(idx);
 	}
 

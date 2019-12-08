@@ -29,7 +29,7 @@ public abstract class AbstractStorage implements Storage {
 		if (idx < 0) {
 			throw new NotExistStorageException(uuid);
 		}
-		return doGet(idx);
+		return doGet(idx, uuid);
 	}
 
 	public void delete(String uuid) {
@@ -37,7 +37,7 @@ public abstract class AbstractStorage implements Storage {
 		if (idx < 0) {
 			throw new NotExistStorageException(uuid);
 		} else {
-			doDelete(idx);
+			doDelete(idx, uuid);
 		}
 	}
 
@@ -45,9 +45,9 @@ public abstract class AbstractStorage implements Storage {
 
 	protected abstract void doSave(Resume resume, int idx);
 
-	protected abstract Resume doGet(int idx);
+	protected abstract Resume doGet(int idx, String uuid);
 
-	protected abstract void doDelete(int idx);
+	protected abstract void doDelete(int idx, String uuid);
 
 	protected abstract int getIndex(String uuid);
 }

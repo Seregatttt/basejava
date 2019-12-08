@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
 	private Storage storage;
-	//private static Storage storage = new ListStorage(); //for local test
+	//private static Storage storage = new MapStorage(); //for local test
 	private static final String UUID_1 = "uuid1";
 	private static final Resume RESUME_1 = new Resume(UUID_1);
 	private static final String UUID_2 = "uuid2";
@@ -54,6 +54,7 @@ public abstract class AbstractStorageTest {
 	@Test
 	public void save() throws Exception {
 		storage.save(RESUME_4);
+		assertEquals(4, storage.size());
 		assertEquals(RESUME_4, storage.get(UUID_4));
 	}
 
@@ -90,6 +91,7 @@ public abstract class AbstractStorageTest {
 	public void delete() throws Exception {
 		storage.delete(UUID_3);
 		storage.get(UUID_3);
+		assertEquals(2, storage.size());
 	}
 
 	@Test(expected = NotExistStorageException.class)
@@ -99,10 +101,9 @@ public abstract class AbstractStorageTest {
 
 	@Test
 	public void getAll() throws Exception {
-		Resume[] resumes = storage.getAll();
-		for (int i = 0; i < storage.size(); i++) {
-			assertEquals(new Resume("uuid" + (i + 1)), resumes[i]);
-		}
+		Resume[] expected = storage.getAll();
+		assertEquals(expected.length,storage.size());
+		assertEquals( expected, storage);
 	}
 
 	@Test
