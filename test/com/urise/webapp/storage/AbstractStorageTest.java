@@ -7,6 +7,8 @@ import com.urise.webapp.model.Resume;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static com.urise.webapp.storage.AbstractArrayStorage.STORAGE_LIMIT;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
@@ -102,8 +104,7 @@ public abstract class AbstractStorageTest {
 	@Test
 	public void getAll() throws Exception {
 		Resume[] expected = storage.getAll();
-		assertEquals(expected.length,storage.size());
-		assertEquals( expected, storage);
+		assertArrayEquals(expected, new Resume[]{RESUME_1, RESUME_2, RESUME_3});
 	}
 
 	@Test
