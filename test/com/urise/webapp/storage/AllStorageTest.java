@@ -1,7 +1,16 @@
 package com.urise.webapp.storage;
 
-/**
- * Created by dev2 on 09.12.2019.
- */
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
+@RunWith(Suite.class)
+@Suite.SuiteClasses(
+		{
+				ArrayStorageTest.class,
+				SortedArrayStorageTest.class,
+				ListStorageTest.class,
+				TreeMapStorageTest.class,
+				HashMapStorageTest.class,
+		})
 public class AllStorageTest {
 }

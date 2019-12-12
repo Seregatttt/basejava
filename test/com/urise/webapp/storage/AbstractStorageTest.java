@@ -8,22 +8,24 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
-
-import static com.urise.webapp.storage.AbstractArrayStorage.STORAGE_LIMIT;
-import static org.junit.Assert.*;
+import java.util.List;
 import static org.junit.Assert.assertEquals;
-
-public abstract class AbstractStorageTest {
-	private Storage storage;
-	//private static Storage storage = new MapStorage(); //for local test
+//abstract
+public  abstract class AbstractStorageTest {
+	protected Storage storage;
+	//protected static Storage storage = new HashMapStorage(); //for local test
 	private static final String UUID_1 = "uuid1";
-	private static final Resume RESUME_1 = new Resume(UUID_1);
+	private static final String NAME_1 = "name1";
+	private static final Resume RESUME_1 = new Resume(UUID_1,NAME_1);
 	private static final String UUID_2 = "uuid2";
-	private static final Resume RESUME_2 = new Resume(UUID_2);
+	private static final String NAME_2 = "name2";
+	private static final Resume RESUME_2 = new Resume(UUID_2,NAME_2);
 	private static final String UUID_3 = "uuid3";
-	private static final Resume RESUME_3 = new Resume(UUID_3);
+	private static final String NAME_3 = "name3";
+	private static final Resume RESUME_3 = new Resume(UUID_3,NAME_3);
 	private static final String UUID_4 = "uuid4";
-	private static final Resume RESUME_4 = new Resume(UUID_4);
+	private static final String NAME_4 = "name4";
+	private static final Resume RESUME_4 = new Resume(UUID_4,NAME_4);
 
 	AbstractStorageTest(Storage storage) {
 		this.storage = storage;
@@ -31,9 +33,9 @@ public abstract class AbstractStorageTest {
 
 	@Before
 	public void setUp() throws Exception {
-		storage.save(RESUME_1);
-		storage.save(RESUME_2);
 		storage.save(RESUME_3);
+		storage.save(RESUME_2);
+		storage.save(RESUME_1);
 	}
 
 	@Test
@@ -65,20 +67,6 @@ public abstract class AbstractStorageTest {
 		storage.save(RESUME_3);
 	}
 
-	//@Ignore //only array
-	@Test(expected = StorageException.class)
-	public void saveOverflowResume() throws Exception {
-		storage.clear();
-		try {
-			for (int i = 0; i < STORAGE_LIMIT; i++) {
-				storage.save(new Resume("uuid_" + i));
-			}
-		} catch (StorageException e) {
-			fail("Test fail");
-		}
-		storage.save(new Resume("uuid_" + (STORAGE_LIMIT + 1)));
-	}
-
 	@Test
 	public void get() throws Exception {
 		assertEquals(RESUME_1, storage.get(UUID_1));
@@ -102,13 +90,15 @@ public abstract class AbstractStorageTest {
 	}
 
 	@Test
-	public void getAll() throws Exception {
-		Resume[] expected = storage.getAll();
-		assertArrayEquals(expected, new Resume[]{RESUME_1, RESUME_2, RESUME_3});
-	}
-
-	@Test
 	public void size() throws Exception {
 		assertEquals(3, storage.size());
 	}
+
+	@Test
+	public void getAllSorted() throws Exception {
+		List<Resume> list = storage.getAllSorted();
+		assertEquals(3, list.size());
+		assertEquals( Arrays.asList(RESUME_1, RESUME_2, RESUME_3),list);
+	}
+
 }

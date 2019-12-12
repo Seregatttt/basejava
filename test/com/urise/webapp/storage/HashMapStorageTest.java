@@ -1,8 +1,7 @@
-import static org.junit.Assert.*;
+package com.urise.webapp.storage;
 
-/**
- * Created by dev2 on 11.12.2019.
- */
-public class HashMapStorageTest {
-
+public class HashMapStorageTest extends AbstractStorageTest{
+	public HashMapStorageTest() {
+			super(new HashMapStorage());
+	}
 }

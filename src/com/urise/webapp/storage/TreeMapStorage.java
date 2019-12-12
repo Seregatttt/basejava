@@ -4,7 +4,7 @@ import com.urise.webapp.model.Resume;
 
 import java.util.*;
 
-public class MapStorage extends AbstractStorage {
+public class TreeMapStorage extends AbstractStorage {
 	private Map<String, Resume> storage = new TreeMap<>();
 
 	@Override
@@ -23,13 +23,13 @@ public class MapStorage extends AbstractStorage {
 	}
 
 	@Override
-	protected Resume doGet(Object idx, String uuid) {
-		return storage.get(uuid);
+	protected Resume doGet(Object idx) {
+		return storage.get(idx);
 	}
 
 	@Override
-	protected void doDelete(Object idx, String uuid) {
-		storage.remove(uuid);
+	protected void doDelete(Object idx) {
+		storage.remove(idx);
 	}
 
 	@Override
@@ -38,10 +38,8 @@ public class MapStorage extends AbstractStorage {
 	}
 
 	@Override
-	public List<Resume> getAllSorted() {
-		//List<Resume> list = Arrays.asList(storage.values().toArray(new Resume[0]));
+	public List<Resume> doGetAllSorted() {
 		List<Resume> list = new ArrayList<Resume>(storage.values());
-		Collections.sort(list);
 		return list;
 	}
 
@@ -52,11 +50,11 @@ public class MapStorage extends AbstractStorage {
 
 	@Override
 	protected Object getSearchKey(String searchKey) {
-		return searchKey;
+		return (String) searchKey;
 	}
 
 	@Override
-	protected boolean isExistKey(Object searchKey) {
+	protected boolean isExist(Object searchKey) {
 		return storage.containsKey(searchKey);
 	}
 
