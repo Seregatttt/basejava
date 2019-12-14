@@ -35,12 +35,9 @@ public class TreeMapStorage extends AbstractStorage {
 		storage.remove(((Resume) resume).getUuid());
 	}
 
-	// please , i save this fo remember
-	// Resume[] getAll() {		return storage.values().toArray(new Resume[0]);	}
-
 	@Override
 	public List<Resume> doGetAllSorted() {
-		return new ArrayList<Resume>(storage.values());
+		return new ArrayList<>(storage.values());
 	}
 
 	@Override
@@ -55,7 +52,6 @@ public class TreeMapStorage extends AbstractStorage {
 
 	@Override
 	protected boolean isExist(Object resume) {
-		//return storage.containsKey(searchKey);
 		return resume != null;
 	}
 
