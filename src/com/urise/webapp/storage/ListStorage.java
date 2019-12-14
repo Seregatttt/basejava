@@ -3,7 +3,6 @@ package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
@@ -34,10 +33,8 @@ public class ListStorage extends AbstractStorage {
 		storage.remove((int) idx);
 	}
 
-	@Override
-	public Resume[] getAll() {
-		return storage.toArray(new Resume[storage.size()]);
-	}
+	// please , i save this fo remember
+	//public Resume[] getAll() {return storage.toArray(new Resume[storage.size()]);	}
 
 	@Override
 	public List<Resume> doGetAllSorted() {
@@ -49,8 +46,8 @@ public class ListStorage extends AbstractStorage {
 		return storage.size();
 	}
 
-	protected Object getSearchKey(String searchKey) {
-		return (int) storage.lastIndexOf(new Resume(searchKey, ""));
+	protected Integer getSearchKey(String searchKey) {
+		return storage.lastIndexOf(new Resume(searchKey, ""));
 	}
 
 	@Override

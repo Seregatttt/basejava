@@ -2,15 +2,14 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.urise.webapp.storage.AbstractArrayStorage.STORAGE_LIMIT;
 import static org.junit.Assert.fail;
 
-public class OnlyArrayStorageTest extends AbstractStorageTest{
+public class AbstractArrayStorageTest extends AbstractStorageTest {
 
-	OnlyArrayStorageTest(Storage storage) {
+	AbstractArrayStorageTest(Storage storage) {
 		super(storage);
 	}
 

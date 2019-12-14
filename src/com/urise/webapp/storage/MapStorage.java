@@ -3,12 +3,12 @@ package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class HashMapStorage extends AbstractStorage {
-	HashMap<String, Resume> storage = new HashMap<>();
+public class MapStorage extends AbstractStorage {
+	Map<String, Resume> storage = new HashMap<>();
 
 	@Override
 	public void clear() {
@@ -16,14 +16,8 @@ public class HashMapStorage extends AbstractStorage {
 	}
 
 	@Override
-	public Resume[] getAll() {
-		return new Resume[0];
-	}
-
-	@Override
 	public List<Resume> doGetAllSorted() {
-		List<Resume> list = new ArrayList<Resume>(storage.values());
-		return list;
+		return new ArrayList<Resume>(storage.values());
 	}
 
 	@Override
@@ -52,8 +46,8 @@ public class HashMapStorage extends AbstractStorage {
 	}
 
 	@Override
-	protected Object getSearchKey(String searchKey) {
-		return (String) searchKey;
+	protected String getSearchKey(String searchKey) {
+		return searchKey;
 	}
 
 	@Override

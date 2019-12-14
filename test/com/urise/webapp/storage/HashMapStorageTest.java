@@ -1,7 +1,7 @@
 package com.urise.webapp.storage;
 
-public class HashMapStorageTest extends AbstractStorageTest{
+public class HashMapStorageTest extends AbstractStorageTest {
 	public HashMapStorageTest() {
-			super(new HashMapStorage());
+		super(new MapStorage());
 	}
 }

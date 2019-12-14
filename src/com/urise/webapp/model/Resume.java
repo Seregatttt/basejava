@@ -1,5 +1,6 @@
 package com.urise.webapp.model;
 
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -33,7 +34,7 @@ public class Resume implements Comparable<Resume> {
 		if (o == null || getClass() != o.getClass()) return false;
 		Resume resume = (Resume) o;
 
-		if (fullName != "") {
+		if (!Objects.equals(fullName, "")) {
 			if (!uuid.equals(resume.uuid)) {
 				return false;
 			}

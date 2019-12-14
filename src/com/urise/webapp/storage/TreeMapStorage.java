@@ -2,7 +2,10 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class TreeMapStorage extends AbstractStorage {
 	private Map<String, Resume> storage = new TreeMap<>();
@@ -23,24 +26,21 @@ public class TreeMapStorage extends AbstractStorage {
 	}
 
 	@Override
-	protected Resume doGet(Object idx) {
-		return storage.get(idx);
+	protected Resume doGet(Object resume) {
+		return (Resume) resume;
 	}
 
 	@Override
-	protected void doDelete(Object idx) {
-		storage.remove(idx);
+	protected void doDelete(Object resume) {
+		storage.remove(((Resume) resume).getUuid());
 	}
 
-	@Override
-	public Resume[] getAll() {
-		return storage.values().toArray(new Resume[0]);
-	}
+	// please , i save this fo remember
+	// Resume[] getAll() {		return storage.values().toArray(new Resume[0]);	}
 
 	@Override
 	public List<Resume> doGetAllSorted() {
-		List<Resume> list = new ArrayList<Resume>(storage.values());
-		return list;
+		return new ArrayList<Resume>(storage.values());
 	}
 
 	@Override
@@ -49,13 +49,14 @@ public class TreeMapStorage extends AbstractStorage {
 	}
 
 	@Override
-	protected Object getSearchKey(String searchKey) {
-		return (String) searchKey;
+	protected Resume getSearchKey(String searchKey) {
+		return storage.get(searchKey);
 	}
 
 	@Override
-	protected boolean isExist(Object searchKey) {
-		return storage.containsKey(searchKey);
+	protected boolean isExist(Object resume) {
+		//return storage.containsKey(searchKey);
+		return resume != null;
 	}
 
 
