@@ -9,11 +9,12 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
 	protected Storage storage;
-	//protected static Storage storage = new MapStorage(); //for local test
+	//protected static Storage storage = new ListStorage(); //for local test
 	private static final String UUID_1 = "uuid1";
 	private static final Resume RESUME_1 = new Resume(UUID_1, "name1");
 	private static final String UUID_2 = "uuid2";
@@ -42,8 +43,9 @@ public abstract class AbstractStorageTest {
 
 	@Test
 	public void update() throws Exception {
-		storage.update(RESUME_3);
-		assertEquals(RESUME_3, storage.get(UUID_3));
+		Resume newResume = new Resume(UUID_1, "New Name");
+		storage.update(newResume);
+		assertTrue(newResume == storage.get(UUID_1));
 	}
 
 	@Test(expected = NotExistStorageException.class)

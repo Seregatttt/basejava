@@ -16,13 +16,13 @@ public class TreeMapStorage extends AbstractStorage {
 	}
 
 	@Override
-	protected void doUpdate(Resume resume, Object idx) {
-		storage.replace(resume.getUuid(), resume);
+	protected void doUpdate(Resume r, Object resume) {
+		storage.replace(r.getUuid(), r);
 	}
 
 	@Override
-	protected void doSave(Resume resume, Object idx) {
-		storage.put(resume.getUuid(), resume);
+	protected void doSave(Resume r, Object resume) {
+		storage.put(r.getUuid(), r);
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class TreeMapStorage extends AbstractStorage {
 	}
 
 	@Override
-	public List<Resume> doGetAllSorted() {
+	public List<Resume> doCopyAll() {
 		return new ArrayList<>(storage.values());
 	}
 
@@ -46,8 +46,8 @@ public class TreeMapStorage extends AbstractStorage {
 	}
 
 	@Override
-	protected Resume getSearchKey(String searchKey) {
-		return storage.get(searchKey);
+	protected Resume getSearchKey(String uuid) {
+		return storage.get(uuid);
 	}
 
 	@Override

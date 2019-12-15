@@ -22,20 +22,19 @@ public class MainArray {
 
 		while (true) {
 			System.out.println("I am " + ARRAY_STORAGE.getClass());
-			System.out.print("Введите одну из команд - (list | save uuid | delete uuid | get uuid | clear | update | exit): ");
+			System.out.print("Введите одну из команд - (list | save fullName  | delete uuid | get uuid | clear | update uuid fullName | exit): ");
 			String[] params = reader.readLine().trim().toLowerCase().split(" ");
 			if (params.length < 1 || params.length > 2) {
 				System.out.println("Неверная команда.");
 				continue;
 			}
-			String uuid = "?";
-			if (params.length == 2) {
-				uuid = params[1].intern();
+			String param = "?";
+			if (params.length > 1) {
+				param = params[1].intern();
 			}
 			switch (params[0]) {
 				case "update":
-					r = new Resume(uuid);
-					//r.setUuid(uuid);
+					r = new Resume(param, params[2]);
 					ARRAY_STORAGE.update(r);
 					printAll();
 					break;
@@ -46,20 +45,20 @@ public class MainArray {
 					System.out.println("size = " + ARRAY_STORAGE.size());
 					break;
 				case "save":
-					r = new Resume(uuid);
+					r = new Resume(param);
 					//r.setUuid(uuid);
 					ARRAY_STORAGE.save(r);
 					printAll();
 					break;
 				case "delete":
-					ARRAY_STORAGE.delete(uuid);
+					ARRAY_STORAGE.delete(param);
 					printAll();
 					break;
 				case "get":
-					if (ARRAY_STORAGE.get(uuid) == null) {
-						System.out.println("uuid " + uuid + " not found");
+					if (ARRAY_STORAGE.get(param) == null) {
+						System.out.println("uuid " + param + " not found");
 					} else {
-						System.out.println(ARRAY_STORAGE.get(uuid).toString());
+						System.out.println(ARRAY_STORAGE.get(param).toString());
 					}
 					break;
 				case "clear":
@@ -76,7 +75,7 @@ public class MainArray {
 	}
 
 	private static void printAll() {
-		List all = ARRAY_STORAGE.getAllSorted();
+		List<Resume> all = ARRAY_STORAGE.getAllSorted();
 		System.out.println("----------------------------");
 		if (all.size() == 0) {
 			System.out.println("Empty");

@@ -16,8 +16,8 @@ public class MapStorage extends AbstractStorage {
 	}
 
 	@Override
-	public List<Resume> doGetAllSorted() {
-		return new ArrayList<Resume>(storage.values());
+	public List<Resume> doCopyAll() {
+		return new ArrayList<>(storage.values());
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class MapStorage extends AbstractStorage {
 
 	@Override
 	protected void doUpdate(Resume resume, Object searchKey) {
-		storage.replace(resume.getUuid(), resume);
+		storage.replace((String) searchKey, resume);
 	}
 
 	@Override

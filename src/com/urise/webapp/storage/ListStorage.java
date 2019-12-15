@@ -33,12 +33,9 @@ public class ListStorage extends AbstractStorage {
 		storage.remove((int) idx);
 	}
 
-	// please , i save this fo remember
-	//public Resume[] getAll() {return storage.toArray(new Resume[storage.size()]);	}
-
 	@Override
-	public List<Resume> doGetAllSorted() {
-		return storage;
+	public List<Resume> doCopyAll() {
+		return new ArrayList<>(storage);
 	}
 
 	@Override
