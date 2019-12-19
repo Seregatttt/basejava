@@ -10,14 +10,14 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 	private static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(o -> (o.getUuid()));
 
 	@Override
-	protected void insert(Resume resume, Object idx) {
+	protected void insert(Resume resume, Integer idx) {
 		int insIdx = -(int) idx - 1;
 		System.arraycopy(storage, insIdx, storage, insIdx + 1, size - insIdx);
 		storage[insIdx] = resume;
 	}
 
 	@Override
-	protected void remove(Object idx) {
+	protected void remove(Integer idx) {
 		int deleteIdx = (int) idx + 1;
 		System.arraycopy(storage, deleteIdx, storage, deleteIdx - 1, size - deleteIdx);
 	}

@@ -6,64 +6,74 @@ import com.urise.webapp.model.Resume;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
-public abstract class AbstractStorage implements Storage {
+public abstract class AbstractStorage<SK> implements Storage {
+
+	private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
 	public void update(Resume resume) {
-		Object searchKey = getExistSearchKey(resume.getUuid());
+		LOG.info("Update " + resume);
+		SK searchKey = getExistSearchKey(resume.getUuid());
 		doUpdate(resume, searchKey);
 	}
 
 	public void save(Resume resume) {
-		Object searchKey = getNotExistSearchKey(resume.getUuid());
+		LOG.info("Save " + resume);
+		SK searchKey = getNotExistSearchKey(resume.getUuid());
 		doSave(resume, searchKey);
 	}
 
 	public Resume get(String uuid) {
-		Object searchKey = getExistSearchKey(uuid);
+		LOG.info("Get " + uuid);
+		SK searchKey = getExistSearchKey(uuid);
 		return doGet(searchKey);
 	}
 
 	public void delete(String uuid) {
-		Object searchKey = getExistSearchKey(uuid);
+		LOG.info("Delete " + uuid);
+		SK searchKey = getExistSearchKey(uuid);
 		doDelete(searchKey);
 	}
 
-	private Object getExistSearchKey(String uuid) {
-		Object searchKey = getSearchKey(uuid);
+	private SK getExistSearchKey(String uuid) {
+		SK searchKey = getSearchKey(uuid);
 		if (isExist(searchKey)) {
 			return searchKey;
 		} else {
+			LOG.warning("Resume " + uuid + " not exist");
 			throw new NotExistStorageException(uuid);
 		}
 	}
 
-	private Object getNotExistSearchKey(String uuid) {
-		Object searchKey = getSearchKey(uuid);
+	private SK getNotExistSearchKey(String uuid) {
+		SK searchKey = getSearchKey(uuid);
 		if (!isExist(searchKey)) {
 			return searchKey;
 		} else {
+			LOG.warning("Resume " + uuid + " already exist");
 			throw new ExistStorageException(uuid);
 		}
 	}
 
 	public List<Resume> getAllSorted() {
+		LOG.info("getAllSorted");
 		List<Resume> list = doCopyAll();
 		Collections.sort(list);
 		return list;
 	}
 
-	protected abstract void doUpdate(Resume resume, Object searchKey);
+	protected abstract void doUpdate(Resume resume, SK searchKey);
 
-	protected abstract void doSave(Resume resume, Object searchKey);
+	protected abstract void doSave(Resume resume, SK searchKey);
 
-	protected abstract Resume doGet(Object searchKey);
+	protected abstract Resume doGet(SK searchKey);
 
-	protected abstract void doDelete(Object searchKey);
+	protected abstract void doDelete(SK searchKey);
 
-	protected abstract Object getSearchKey(String searchKey);
+	protected abstract SK getSearchKey(String searchKey);
 
-	protected abstract boolean isExist(Object searchKey);
+	protected abstract boolean isExist(SK searchKey);
 
 	protected abstract List<Resume> doCopyAll();
 }
