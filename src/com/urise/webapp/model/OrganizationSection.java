@@ -1,9 +1,9 @@
 package com.urise.webapp.model;
 
-public class ObjectSection extends Section {
+public class OrganizationSection extends Section {
 	private Organization organization;
 
-	public ObjectSection(Organization organization) {
+	public OrganizationSection(Organization organization) {
 		this.organization = organization;
 	}
 
@@ -17,7 +17,7 @@ public class ObjectSection extends Section {
 
 	@Override
 	public String toString() {
-		return "\n ObjectSection{" +
+		return "\n OrganizationSection{" +
 				"organization=" + organization +
 				'}' + "\n";
 	}
