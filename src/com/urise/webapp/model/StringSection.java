@@ -1,6 +1,6 @@
 package com.urise.webapp.model;
 
-public class StringSection extends Section {
+public class StringSection extends AbstractSection {
 	private String title;
 
 	public String getTitle() {
