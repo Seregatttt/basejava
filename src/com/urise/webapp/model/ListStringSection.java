@@ -1,13 +1,22 @@
 package com.urise.webapp.model;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ListStringSection extends AbstractSection {
-	private List<String> list = new ArrayList<>();
+	private final List<String> list;
 
 	public void save(String text) {
 		list.add(text);
+	}
+
+	public ListStringSection(List<String> list) {
+		Objects.requireNonNull(list, "list must not be null");
+		this.list = list;
+	}
+
+	public List<String> getList() {
+		return list;
 	}
 
 	@Override

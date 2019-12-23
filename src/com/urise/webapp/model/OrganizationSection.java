@@ -1,18 +1,17 @@
 package com.urise.webapp.model;
 
+import java.util.Objects;
+
 public class OrganizationSection extends AbstractSection {
-	private Organization organization;
+	private final Organization organization;
 
 	public OrganizationSection(Organization organization) {
+		Objects.requireNonNull(organization, "organization must not be null");
 		this.organization = organization;
 	}
 
 	public Organization getOrganization() {
 		return organization;
-	}
-
-	public void setOrganization(Organization organization) {
-		this.organization = organization;
 	}
 
 	@Override

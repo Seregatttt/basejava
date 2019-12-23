@@ -38,16 +38,16 @@ public class Resume implements Comparable<Resume> {
 		return fullName;
 	}
 
-	public Map<ContactType, String> getContacts() {
-		return contacts;
+	public String getContacts(ContactType type) {
+		return contacts.get(type);
 	}
 
 	public void setContacts(ContactType contactType, String value) {
 		this.contacts.put(contactType, value);
 	}
 
-	public Map<SectionType, AbstractSection> getSections() {
-		return sections;
+	public AbstractSection getSections(SectionType type) {
+		return sections.get(type);
 	}
 
 	public void setSections(SectionType sectionType, AbstractSection section) {
@@ -66,10 +66,14 @@ public class Resume implements Comparable<Resume> {
 
 		Resume resume = (Resume) o;
 
-		if (!uuid.equals(resume.uuid)) return false;
-		if (fullName != null ? !fullName.equals(resume.fullName) : resume.fullName != null) return false;
-		if (contacts != null ? !contacts.equals(resume.contacts) : resume.contacts != null) return false;
-		return sections != null ? sections.equals(resume.sections) : resume.sections == null;
+		if (!Objects.equals(fullName, "")) {
+			if (!uuid.equals(resume.uuid)) return false;
+			if (fullName != null ? !fullName.equals(resume.fullName) : resume.fullName != null) return false;
+			if (contacts != null ? !contacts.equals(resume.contacts) : resume.contacts != null) return false;
+			return sections != null ? sections.equals(resume.sections) : resume.sections == null;
+		} else {
+			return uuid.equals(resume.uuid);
+		}
 	}
 
 	@Override

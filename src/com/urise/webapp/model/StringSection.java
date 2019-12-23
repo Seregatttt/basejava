@@ -1,18 +1,17 @@
 package com.urise.webapp.model;
 
+import java.util.Objects;
+
 public class StringSection extends AbstractSection {
-	private String title;
+	private final String content;
 
-	public String getTitle() {
-		return title;
+	public String getContent() {
+		return content;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public StringSection(String title) {
-		this.title = title;
+	public StringSection(String content) {
+		Objects.requireNonNull(content, "content must not be null");
+		this.content = content;
 	}
 
 	@Override
@@ -22,18 +21,18 @@ public class StringSection extends AbstractSection {
 
 		StringSection that = (StringSection) o;
 
-		return title != null ? title.equals(that.title) : that.title == null;
+		return content != null ? content.equals(that.content) : that.content == null;
 	}
 
 	@Override
 	public int hashCode() {
-		return title != null ? title.hashCode() : 0;
+		return content != null ? content.hashCode() : 0;
 	}
 
 	@Override
 	public String toString() {
 		return "\n StringSection{" +
-				"title='" + title + '\'' +
+				"content='" + content + '\'' +
 				'}' + "\n";
 	}
 }
