@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class MainFile {
 	public static void main(String[] args) {
@@ -21,9 +22,10 @@ public class MainFile {
 
 		File dir = new File("./src");
 		System.out.println(dir.isDirectory());
+		System.out.println(dir.getAbsolutePath());
 
 		String[] list = dir.list();
-		System.out.println(list);
+		System.out.println(Arrays.toString(list));
 
 		if (list != null) {
 			for (String name : list) {
@@ -31,26 +33,33 @@ public class MainFile {
 			}
 		}
 
-		filePath = "C:\\#JAVA\\basejava\\src";
+		filePath = "./src";
 		printDir(filePath);
 	}
 
-	public static void printDir(String filePath) {
-		int count = filePath.length() - filePath.replace("\\", "").length();
-		int indent = 0;
+	private static void printDir(String filePath) {
+
 		File dir = new File(filePath);
-		for (File file : dir.listFiles()) {
-			if (file.isFile()) {
-				indent = 2;//отступ для файлов в дереве каталогов
+		int count = dir.getAbsolutePath().length() - dir.getAbsolutePath().replace("\\", "").length();
+		int indent = 0;
+		File[] files = dir.listFiles();
+
+		if (files != null) {
+			for (File file : files) {
+				if (file.isFile()) {
+					indent = 2;//отступ для файлов в дереве каталогов
+				}
+				System.out.println(padLeft(file.getName(), (count + indent) * 5));
+				if (file.isDirectory()) {
+					printDir(file.getAbsolutePath());
+				}
 			}
-			System.out.println(padLeft(file.getName(), (count + indent) * 5));
-			if (file.isDirectory()) {
-				printDir(file.getAbsolutePath());
-			}
+		} else {
+			throw new RuntimeException("Error: files is null !!! ");
 		}
 	}
 
-	public static String padLeft(String s, int n) {
+	private static String padLeft(String s, int n) {
 		return String.format("%" + n + "s", s);
 	}
 }
