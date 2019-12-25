@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public class ResumeTestData {
 
-	public static void main(String[] args) {
-		Resume resume = new Resume("GrigoryKislin");
+	public static Resume Resume(String uuid) {
+		Resume resume = new Resume(uuid, "GrigoryKislin");
 		resume.setContacts(ContactType.PHONE, "+7(921) 855-0482");
 		resume.setContacts(ContactType.SKYPE, "grigory.kislin");
 		resume.setContacts(ContactType.MAIL, "gkislin@yandex.ru");
@@ -59,5 +59,8 @@ public class ResumeTestData {
 		resume.setSections(SectionType.EDUCATION, objectSection);
 
 		System.out.println(resume.getSections(SectionType.EDUCATION));
+		return resume;
 	}
+
+
 }

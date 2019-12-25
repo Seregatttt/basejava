@@ -40,26 +40,17 @@ public class MainFile {
 	private static void printDir(String filePath) {
 
 		File dir = new File(filePath);
-		int count = dir.getAbsolutePath().length() - dir.getAbsolutePath().replace("\\", "").length();
-		int indent = 0;
 		File[] files = dir.listFiles();
 
 		if (files != null) {
 			for (File file : files) {
 				if (file.isFile()) {
-					indent = 2;//отступ для файлов в дереве каталогов
+					System.out.println(file.getName());
 				}
-				System.out.println(padLeft(file.getName(), (count + indent) * 5));
 				if (file.isDirectory()) {
 					printDir(file.getAbsolutePath());
 				}
 			}
-		} else {
-			throw new RuntimeException("Error: files is null !!! ");
 		}
-	}
-
-	private static String padLeft(String s, int n) {
-		return String.format("%" + n + "s", s);
 	}
 }
