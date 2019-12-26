@@ -17,13 +17,13 @@ public abstract class AbstractStorageTest {
 	protected Storage storage;
 	//protected static Storage storage = new ListStorage(); //for local test
 	private static final String UUID_1 = "uuid1";
-	private static final Resume RESUME_1 = ResumeTestData.Resume(UUID_1);
+	private static final Resume RESUME_1 = ResumeTestData.GetResume(UUID_1, "GrigoryKislin" );
 	private static final String UUID_2 = "uuid2";
-	private static final Resume RESUME_2 = ResumeTestData.Resume(UUID_2);
+	private static final Resume RESUME_2 = ResumeTestData.GetResume(UUID_2, "Ivanov");
 	private static final String UUID_3 = "uuid3";
-	private static final Resume RESUME_3 = ResumeTestData.Resume(UUID_3);
+	private static final Resume RESUME_3 = ResumeTestData.GetResume(UUID_3, "Petrov");
 	private static final String UUID_4 = "uuid4";
-	private static final Resume RESUME_4 = ResumeTestData.Resume(UUID_4);
+	private static final Resume RESUME_4 = ResumeTestData.GetResume(UUID_4, "Sidorov");
 
 	AbstractStorageTest(Storage storage) {
 		this.storage = storage;

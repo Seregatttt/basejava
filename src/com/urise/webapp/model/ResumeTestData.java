@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class ResumeTestData {
 
-	public static Resume Resume(String uuid) {
+	public static Resume GetResume(String uuid, String fullName) {
 		Resume resume = new Resume(uuid, "GrigoryKislin");
 		resume.setContacts(ContactType.PHONE, "+7(921) 855-0482");
 		resume.setContacts(ContactType.SKYPE, "grigory.kislin");
