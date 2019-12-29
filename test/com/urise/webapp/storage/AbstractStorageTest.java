@@ -7,6 +7,7 @@ import com.urise.webapp.model.ResumeTestData;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,10 +15,11 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
+	protected static final File STORAGE_DIR = new File("C:\\projects\\storage");
 	protected Storage storage;
 	//protected static Storage storage = new ListStorage(); //for local test
 	private static final String UUID_1 = "uuid1";
-	private static final Resume RESUME_1 = ResumeTestData.GetResume(UUID_1, "GrigoryKislin" );
+	private static final Resume RESUME_1 = ResumeTestData.GetResume(UUID_1, "GrigoryKislin");
 	private static final String UUID_2 = "uuid2";
 	private static final Resume RESUME_2 = ResumeTestData.GetResume(UUID_2, "Ivanov");
 	private static final String UUID_3 = "uuid3";
@@ -31,6 +33,7 @@ public abstract class AbstractStorageTest {
 
 	@Before
 	public void setUp() throws Exception {
+		storage.clear();
 		storage.save(RESUME_3);
 		storage.save(RESUME_2);
 		storage.save(RESUME_1);
@@ -46,7 +49,7 @@ public abstract class AbstractStorageTest {
 	public void update() throws Exception {
 		Resume newResume = new Resume(UUID_1, "New Name");
 		storage.update(newResume);
-		assertTrue(newResume == storage.get(UUID_1));
+		assertTrue(newResume.equals(storage.get(UUID_1)));
 	}
 
 	@Test(expected = NotExistStorageException.class)

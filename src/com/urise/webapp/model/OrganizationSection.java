@@ -3,6 +3,7 @@ package com.urise.webapp.model;
 import java.util.Objects;
 
 public class OrganizationSection extends AbstractSection {
+	private static final long serialVersionUID = 1L;
 	private final Organization organization;
 
 	public OrganizationSection(Organization organization) {

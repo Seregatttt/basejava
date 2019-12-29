@@ -1,7 +1,6 @@
 package com.urise.webapp.model;
 
 import java.time.Month;
-import java.time.YearMonth;
 import java.util.ArrayList;
 
 public class ResumeTestData {
@@ -35,26 +34,21 @@ public class ResumeTestData {
 
 		String nameOrg = "Java Online Projects";
 		String url = "www.leningrad.ru";
-		YearMonth ym1 = YearMonth.of(2013, Month.OCTOBER);
-		YearMonth ym2 = YearMonth.of(2019, Month.DECEMBER);
-		String position = "Автор проекта.";
+		String title = "Автор проекта.";
 		String description = "Создание, организация и проведение Java онлайн проектов и стажировок.";
-		Organization org = new Organization(nameOrg, url, ym1, ym2, position, description);
+		Organization org =
+				new Organization(nameOrg, url,
+						new Organization.Position(2013, Month.OCTOBER, 2019, Month.DECEMBER, title, description));
 		OrganizationSection objectSection = new OrganizationSection(org);
 		resume.setSections(SectionType.EXPERIENCE, objectSection);
 
-		nameOrg = "Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики";
-		url = "www.leningrad.ru";
-		ym1 = YearMonth.of(1993, Month.SEPTEMBER);
-		ym2 = YearMonth.of(1996, Month.JULY);
-		position = "Инженер (программист Fortran, C)";
-		description = null;
-		org = new Organization(nameOrg, url, ym1, ym2, position, description);
-		ym1 = YearMonth.of(1987, Month.SEPTEMBER);
-		ym2 = YearMonth.of(1993, Month.JULY);
-		position = "Аспирантура (программист С, С++)";
-		description = null;
-		org.addPeriod(ym1, ym2, position, description);
+		org = new Organization(
+				"Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики",
+				"www.leningrad.ru",
+				new Organization.Position(1993, Month.SEPTEMBER, 1996, Month.JULY,
+						"Инженер (программист Fortran, C)", null),
+				new Organization.Position(1987, Month.SEPTEMBER, 1993, Month.JULY,
+						"Аспирантура (программист С, С++)", null));
 		objectSection = new OrganizationSection(org);
 		resume.setSections(SectionType.EDUCATION, objectSection);
 

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class ListStringSection extends AbstractSection {
+	private static final long serialVersionUID = 1L;
 	private final List<String> list;
 
 	public void save(String text) {
