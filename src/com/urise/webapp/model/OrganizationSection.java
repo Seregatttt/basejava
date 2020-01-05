@@ -1,18 +1,24 @@
 package com.urise.webapp.model;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class OrganizationSection extends AbstractSection {
 	private static final long serialVersionUID = 1L;
-	private final Organization organization;
+	private final List<Organization> organizations;
 
-	public OrganizationSection(Organization organization) {
-		Objects.requireNonNull(organization, "organization must not be null");
-		this.organization = organization;
+	public OrganizationSection(Organization... organizations) {
+		this(Arrays.asList(organizations));
 	}
 
-	public Organization getOrganization() {
-		return organization;
+	public OrganizationSection(List<Organization> organizations) {
+		Objects.requireNonNull(organizations, "organizations must not be null");
+		this.organizations = organizations;
+	}
+
+	public List<Organization> getOrganizations() {
+		return organizations;
 	}
 
 	@Override
@@ -22,18 +28,16 @@ public class OrganizationSection extends AbstractSection {
 
 		OrganizationSection that = (OrganizationSection) o;
 
-		return organization != null ? organization.equals(that.organization) : that.organization == null;
+		return organizations.equals(that.organizations);
 	}
 
 	@Override
 	public int hashCode() {
-		return organization != null ? organization.hashCode() : 0;
+		return organizations.hashCode();
 	}
 
 	@Override
 	public String toString() {
-		return "\n OrganizationSection{" +
-				"organization=" + organization +
-				'}' + "\n";
+		return organizations.toString();
 	}
 }

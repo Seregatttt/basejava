@@ -34,33 +34,21 @@ public class MainFile {
 			}
 		}
 
-		filePath = "./src";
-		printDir(filePath);
+		printDir(dir, " ");
 	}
 
-	private static void printDir(String filePath) {
-
-		File dir = new File(filePath);
-		int count = dir.getAbsolutePath().length() - dir.getAbsolutePath().replace("\\", "").length();
-		int indent = 0;
+	public static void printDir(File dir, String offset) {
 		File[] files = dir.listFiles();
 
 		if (files != null) {
 			for (File file : files) {
 				if (file.isFile()) {
-					indent = 2;//отступ для файлов в дереве каталогов
-				}
-				System.out.println(padLeft(file.getName(), (count + indent) * 5));
-				if (file.isDirectory()) {
-					printDir(file.getAbsolutePath());
+					System.out.println(offset + "File: " + file.getName());
+				} else if (file.isDirectory()) {
+					System.out.println(offset + "Dir: " + file.getName());
+					printDir(file, offset + "  ");
 				}
 			}
-		} else {
-			throw new RuntimeException("Error: files is null !!! ");
 		}
-	}
-
-	private static String padLeft(String s, int n) {
-		return String.format("%" + n + "s", s);
 	}
 }

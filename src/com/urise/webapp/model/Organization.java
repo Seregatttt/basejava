@@ -25,10 +25,6 @@ public class Organization implements Serializable {
 		this(new Link(name, url), Arrays.asList(positions));
 	}
 
-	/*public void addPeriod(YearMonth startDate, YearMonth endDate, String title, String description) {
-		this.positions.add(new Position(startDate, endDate, title, description));
-	}*/
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -100,32 +96,21 @@ public class Organization implements Serializable {
 		public boolean equals(Object o) {
 			if (this == o) return true;
 			if (o == null || getClass() != o.getClass()) return false;
-
-			Position period = (Position) o;
-
-			if (!startDate.equals(period.startDate)) return false;
-			if (!endDate.equals(period.endDate)) return false;
-			if (!title.equals(period.title)) return false;
-			return description != null ? description.equals(period.description) : period.description == null;
+			Position position = (Position) o;
+			return Objects.equals(startDate, position.startDate) &&
+					Objects.equals(endDate, position.endDate) &&
+					Objects.equals(title, position.title) &&
+					Objects.equals(description, position.description);
 		}
 
 		@Override
 		public int hashCode() {
-			int result = startDate.hashCode();
-			result = 31 * result + endDate.hashCode();
-			result = 31 * result + title.hashCode();
-			result = 31 * result + (description != null ? description.hashCode() : 0);
-			return result;
+			return Objects.hash(startDate, endDate, title, description);
 		}
 
 		@Override
 		public String toString() {
-			return "\n Position{" +
-					"startDate=" + startDate +
-					", endDate=" + endDate +
-					", title='" + title + '\'' +
-					", description='" + description + '\'' +
-					'}';
+			return "Position(" + startDate + ',' + endDate + ',' + title + ',' + description + ')';
 		}
 	}
 }
