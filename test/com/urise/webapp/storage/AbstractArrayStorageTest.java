@@ -8,11 +8,11 @@ import static com.urise.webapp.storage.AbstractArrayStorage.STORAGE_LIMIT;
 import static org.junit.Assert.fail;
 
 public class AbstractArrayStorageTest extends AbstractStorageTest {
-
+	
 	AbstractArrayStorageTest(Storage storage) {
 		super(storage);
 	}
-
+	
 	@Test(expected = StorageException.class)
 	public void saveOverflowResume() throws Exception {
 		storage.clear();

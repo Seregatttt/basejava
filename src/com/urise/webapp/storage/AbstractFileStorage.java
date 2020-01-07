@@ -10,7 +10,7 @@ import java.util.Objects;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
 	private File directory;
-
+	
 	protected AbstractFileStorage(File directory) {
 		Objects.requireNonNull(directory, "directory must not be null");
 		if (!directory.isDirectory()) {
@@ -21,7 +21,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 		}
 		this.directory = directory;
 	}
-
+	
 	@Override
 	public void clear() {
 		File[] files = directory.listFiles();
@@ -33,7 +33,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 			}
 		}
 	}
-
+	
 	@Override
 	public int size() {
 		String[] list = directory.list();
@@ -42,12 +42,12 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 		}
 		return list.length;
 	}
-
+	
 	@Override
 	protected File getSearchKey(String uuid) {
 		return new File(directory, uuid);
 	}
-
+	
 	@Override
 	protected void doUpdate(Resume r, File file) {
 		try {
@@ -56,12 +56,12 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 			throw new StorageException("File write error", r.getUuid(), e);
 		}
 	}
-
+	
 	@Override
 	protected boolean isExist(File file) {
 		return file.exists();
 	}
-
+	
 	@Override
 	protected void doSave(Resume r, File file) {
 		try {
@@ -71,11 +71,11 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 		}
 		doUpdate(r, file);
 	}
-
+	
 	protected abstract void doWrite(Resume r, OutputStream os) throws IOException;
-
+	
 	protected abstract Resume doRead(InputStream is) throws IOException;
-
+	
 	@Override
 	protected Resume doGet(File file) {
 		try {
@@ -84,14 +84,14 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 			throw new StorageException("File read error", file.getName(), e);
 		}
 	}
-
+	
 	@Override
 	protected void doDelete(File file) {
 		if (!file.delete()) {
 			throw new StorageException("File delete error", file.getName());
 		}
 	}
-
+	
 	@Override
 	protected List<Resume> doCopyAll() {
 		File[] files = directory.listFiles();

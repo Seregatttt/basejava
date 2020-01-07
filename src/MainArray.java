@@ -15,11 +15,11 @@ import java.util.List;
 public class MainArray {
 	private final static Storage ARRAY_STORAGE = new SortedArrayStorage();
 	//private final static Storage ARRAY_STORAGE = new ArrayStorage();
-
+	
 	public static void main(String[] args) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		Resume r;
-
+		
 		while (true) {
 			System.out.println("I am " + ARRAY_STORAGE.getClass());
 			System.out.print("Введите одну из команд - (list | save fullName  | delete uuid | get uuid | clear | update uuid fullName | exit): ");
@@ -73,7 +73,7 @@ public class MainArray {
 			}
 		}
 	}
-
+	
 	private static void printAll() {
 		List<Resume> all = ARRAY_STORAGE.getAllSorted();
 		System.out.println("----------------------------");
