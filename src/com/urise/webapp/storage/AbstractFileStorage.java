@@ -51,7 +51,9 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 	@Override
 	protected void doUpdate(Resume r, File file) {
 		try {
-			doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
+			Strategy strategy = new ObjectStreamStorage(directory);
+			strategy.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
+			//doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
 		} catch (IOException e) {
 			throw new StorageException("File write error", r.getUuid(), e);
 		}
@@ -79,7 +81,9 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 	@Override
 	protected Resume doGet(File file) {
 		try {
-			return doRead(new BufferedInputStream(new FileInputStream(file)));
+			Strategy strategy = new ObjectStreamStorage(directory);
+			return strategy.doRead(new BufferedInputStream(new FileInputStream(file)));
+			//return doRead(new BufferedInputStream(new FileInputStream(file)));
 		} catch (IOException e) {
 			throw new StorageException("File read error", file.getName(), e);
 		}
