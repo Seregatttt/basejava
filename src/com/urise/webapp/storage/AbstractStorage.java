@@ -4,23 +4,11 @@ import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
 public abstract class AbstractStorage<SK> implements Storage {
-	
-	Strategy strategy;
-	
-	public void setStrategy(Strategy strategy) {
-		this.strategy = strategy;
-	}
-	
-	public Resume executeRead(InputStream is) throws IOException {
-		return strategy.doRead(is);
-	}
 	
 	private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 	

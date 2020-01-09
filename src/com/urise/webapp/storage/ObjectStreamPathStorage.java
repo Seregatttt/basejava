@@ -5,11 +5,7 @@ import com.urise.webapp.model.Resume;
 
 import java.io.*;
 
-public class ObjectStreamPathStorage extends AbstractPathStorage implements Strategy {
-	
-	public ObjectStreamPathStorage(String dir) {
-		super(dir);
-	}
+public class ObjectStreamPathStorage implements Strategy {
 	
 	@Override
 	public void doWrite(Resume r, OutputStream os) throws IOException {
