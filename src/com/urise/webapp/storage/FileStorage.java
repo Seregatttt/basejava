@@ -2,17 +2,18 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.strategy.Strategy;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class AbstractFileStorage extends AbstractStorage<File> {
+public class FileStorage extends AbstractStorage<File> {
 	private File directory;
 	private Strategy strategy;
 	
-	protected AbstractFileStorage(File directory, Strategy strategy) {
+	protected FileStorage(File directory, Strategy strategy) {
 		Objects.requireNonNull(directory, "directory must not be null");
 		if (!directory.isDirectory()) {
 			throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
@@ -26,23 +27,14 @@ public class AbstractFileStorage extends AbstractStorage<File> {
 	
 	@Override
 	public void clear() {
-		File[] files = directory.listFiles();
-		if (files == null) {
-			throw new StorageException("Directory read error", null);
-		} else {
-			for (File file : files) {
-				doDelete(file);
-			}
+		for (File file : getFilesList()) {
+			doDelete(file);
 		}
 	}
 	
 	@Override
 	public int size() {
-		String[] list = directory.list();
-		if (list == null) {
-			throw new StorageException("Directory read error", null);
-		}
-		return list.length;
+		return getFilesList().length;
 	}
 	
 	@Override
@@ -93,7 +85,7 @@ public class AbstractFileStorage extends AbstractStorage<File> {
 	
 	@Override
 	protected List<Resume> doCopyAll() {
-		File[] files = directory.listFiles();
+		File[] files = getFilesList();
 		if (files == null) {
 			throw new StorageException("Directory read error", null);
 		}
@@ -102,5 +94,9 @@ public class AbstractFileStorage extends AbstractStorage<File> {
 			list.add(doGet(file));
 		}
 		return list;
+	}
+	
+	private File[] getFilesList() {
+		return directory.listFiles();
 	}
 }

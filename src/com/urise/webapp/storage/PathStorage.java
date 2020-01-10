@@ -2,6 +2,7 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.strategy.Strategy;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -14,11 +15,11 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class AbstractPathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
 	private Path directory;
 	private Strategy strategy;
 	
-	protected AbstractPathStorage(String dir, Strategy strategy) {
+	protected PathStorage(String dir, Strategy strategy) {
 		directory = Paths.get(dir);
 		Objects.requireNonNull(directory, "directory must not be null");
 		if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
@@ -53,7 +54,7 @@ public class AbstractPathStorage extends AbstractStorage<Path> {
 	
 	@Override
 	protected boolean isExist(Path path) {
-		return Files.exists(path);
+		return Files.isRegularFile(path);
 	}
 	
 	@Override
