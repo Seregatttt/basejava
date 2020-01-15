@@ -2,15 +2,22 @@ package com.urise.webapp.model;
 
 import java.util.Objects;
 
-public class StringSection extends AbstractSection {
+public class TextSection extends Section {
 	private static final long serialVersionUID = 1L;
-	private final String content;
+	private String content;
+	
+	public TextSection() {
+	}
 	
 	public String getContent() {
 		return content;
 	}
 	
-	public StringSection(String content) {
+	public String getTextSection() {
+		return content;
+	}
+	
+	public TextSection(String content) {
 		Objects.requireNonNull(content, "content must not be null");
 		this.content = content;
 	}
@@ -20,7 +27,7 @@ public class StringSection extends AbstractSection {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		
-		StringSection that = (StringSection) o;
+		TextSection that = (TextSection) o;
 		
 		return content != null ? content.equals(that.content) : that.content == null;
 	}
@@ -32,7 +39,7 @@ public class StringSection extends AbstractSection {
 	
 	@Override
 	public String toString() {
-		return "\n StringSection{" +
+		return "\n TextSection{" +
 				"content='" + content + '\'' +
 				'}' + "\n";
 	}
