@@ -25,14 +25,6 @@ public class Organization implements Serializable {
 	public Organization() {
 	}
 	
-	public Link getHomePage() {
-		return homePage;
-	}
-	
-	public List<Position> getPositions() {
-		return positions;
-	}
-	
 	public Organization(Link homePage, List<Position> positions) {
 		this.homePage = homePage;
 		this.positions = positions;
@@ -40,6 +32,14 @@ public class Organization implements Serializable {
 	
 	public Organization(String name, String url, Position... positions) {
 		this(new Link(name, url), Arrays.asList(positions));
+	}
+	
+	public Link getHomePage() {
+		return homePage;
+	}
+	
+	public List<Position> getPositions() {
+		return positions;
 	}
 	
 	@Override

@@ -1,18 +1,14 @@
 package com.urise.webapp.serializer;
 
 import com.urise.webapp.model.*;
-import com.urise.webapp.util.LocalDateAdapter;
 
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class DataStreamSerializer implements StreamSerializer {
-	private static final Logger LOG = Logger.getLogger(DataStreamSerializer.class.getName());
-	private Section section;
 	
 	@Override
 	public void doWrite(Resume r, OutputStream os) throws IOException {
@@ -30,43 +26,44 @@ public class DataStreamSerializer implements StreamSerializer {
 			Map<SectionType, Section> sections = r.getSections();
 			for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
 				dos.writeUTF(entry.getKey().name());
-				
-				if ((entry.getKey() == SectionType.OBJECTIVE) || (entry.getKey() == SectionType.PERSONAL)) {
-					section = entry.getValue();
-					TextSection textSection = (TextSection) section;
-					dos.writeUTF(textSection.getContent());
-				}
-				
-				if ((entry.getKey() == SectionType.ACHIEVEMENT) || (entry.getKey() == SectionType.QUALIFICATIONS)) {
-					ListSection listSection = (ListSection) entry.getValue();
-					dos.writeInt(listSection.getList().size());
-					for (String str : listSection.getList()) {
-						dos.writeUTF(str);
-					}
-				}
-				
-				if ((entry.getKey() == SectionType.EXPERIENCE) || (entry.getKey() == SectionType.EDUCATION)) {
-					OrganizationSection organizationSection = (OrganizationSection) entry.getValue();
-					dos.writeInt(organizationSection.getOrganizations().size());
-					for (Organization org : organizationSection.getOrganizations()) {
-						dos.writeUTF(org.getHomePage().getName());
-						dos.writeUTF(org.getHomePage().getUrl());
-						dos.writeInt(org.getPositions().size());
-						for (Organization.Position pos : org.getPositions()) {
-							LocalDateAdapter localDateAdapter = new LocalDateAdapter();
-							dos.writeUTF(localDateAdapter.marshal(pos.getStartDate()));
-							dos.writeUTF(localDateAdapter.marshal(pos.getEndDate()));
-							dos.writeUTF(pos.getTitle());
-							if (pos.getDescription() != null) {
-								dos.writeUTF(pos.getDescription());
+				switch (entry.getKey()) {
+					case OBJECTIVE:
+					case PERSONAL:
+						TextSection textSection = (TextSection) entry.getValue();
+						dos.writeUTF(textSection.getContent());
+						break;
+					
+					case ACHIEVEMENT:
+					case QUALIFICATIONS:
+						ListSection listSection = (ListSection) entry.getValue();
+						dos.writeInt(listSection.getList().size());
+						for (String str : listSection.getList()) {
+							dos.writeUTF(str);
+						}
+						break;
+					
+					case EXPERIENCE:
+					case EDUCATION:
+						OrganizationSection organizationSection = (OrganizationSection) entry.getValue();
+						dos.writeInt(organizationSection.getOrganizations().size());
+						for (Organization org : organizationSection.getOrganizations()) {
+							dos.writeUTF(org.getHomePage().getName());
+							dos.writeUTF(org.getHomePage().getUrl());
+							dos.writeInt(org.getPositions().size());
+							for (Organization.Position pos : org.getPositions()) {
+								dos.writeUTF(pos.getStartDate().toString());
+								dos.writeUTF(pos.getEndDate().toString());
+								dos.writeUTF(pos.getTitle());
+								if (pos.getDescription() != null) {
+									dos.writeUTF(pos.getDescription());
+								} else {
+									dos.writeUTF("?");
+								}
 							}
 						}
-					}
+						break;
 				}
 			}
-		} catch (Exception e) {
-			LOG.info("Exception doWrite =" + e.toString());
-			e.printStackTrace();
 		}
 	}
 	
@@ -103,14 +100,13 @@ public class DataStreamSerializer implements StreamSerializer {
 					Link link = new Link(dis.readUTF(), dis.readUTF());
 					int sizePos1 = dis.readInt();
 					List<Organization.Position> positions = new ArrayList<>();
-					LocalDateAdapter localDateAdapter = new LocalDateAdapter();
 					for (int j = 0; j < sizePos1; j++) {//loop Positions
-						LocalDate startDate = localDateAdapter.unmarshal(dis.readUTF());
-						LocalDate endDate = localDateAdapter.unmarshal(dis.readUTF());
+						LocalDate startDate = LocalDate.parse(dis.readUTF());
+						LocalDate endDate = LocalDate.parse(dis.readUTF());
 						String title = dis.readUTF();
-						String description = null;
-						if (SectionType.valueOf(nameSection) == SectionType.EXPERIENCE) {
-							description = dis.readUTF();
+						String description = dis.readUTF();
+						if (description.equals("?")) {
+							description = null;
 						}
 						positions.add(new Organization.Position(startDate, endDate, title, description));
 					}
@@ -119,10 +115,6 @@ public class DataStreamSerializer implements StreamSerializer {
 				resume.addSection(SectionType.valueOf(nameSection), new OrganizationSection(organizations));
 			}
 			return resume;
-		} catch (Exception e) {
-			LOG.info("Exception doRead =" + e.toString());
-			e.printStackTrace();
 		}
-		return null;
 	}
 }

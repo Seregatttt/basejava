@@ -10,10 +10,6 @@ public class ListSection extends Section {
 	public ListSection() {
 	}
 	
-	public void save(String text) {
-		list.add(text);
-	}
-	
 	public ListSection(List<String> list) {
 		Objects.requireNonNull(list, "list must not be null");
 		this.list = list;
@@ -21,6 +17,10 @@ public class ListSection extends Section {
 	
 	public List<String> getList() {
 		return list;
+	}
+	
+	public void save(String text) {
+		list.add(text);
 	}
 	
 	@Override

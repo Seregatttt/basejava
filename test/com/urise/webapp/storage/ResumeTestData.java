@@ -1,4 +1,6 @@
-package com.urise.webapp.model;
+package com.urise.webapp.storage;
+
+import com.urise.webapp.model.*;
 
 import java.time.Month;
 import java.util.ArrayList;
@@ -38,7 +40,7 @@ public class ResumeTestData {
 		String description = "Creating project";
 		Organization org =
 				new Organization(nameOrg, url,
-						new Organization.Position(2013, Month.OCTOBER, 2019, Month.DECEMBER, title, description));
+						new Organization.Position(2013, Month.OCTOBER, 2019, Month.DECEMBER, title, null));
 		OrganizationSection objectSection = new OrganizationSection(org);
 		resume.addSection(SectionType.EXPERIENCE, objectSection);
 		
@@ -46,7 +48,7 @@ public class ResumeTestData {
 				"University SP",
 				"www.leningrad.ru",
 				new Organization.Position(1993, Month.SEPTEMBER, 1996, Month.JULY,
-						"Inginer", null),
+						"Inginer", description),
 				new Organization.Position(1987, Month.SEPTEMBER, 1993, Month.JULY,
 						"Aspirant", null));
 		objectSection = new OrganizationSection(org);

@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-import static com.urise.webapp.model.SectionType.*;
-
 /**
  * Initial resume class
  */
@@ -90,28 +88,7 @@ public class Resume implements Comparable<Resume>, Serializable {
 			if (!uuid.equals(resume.uuid)) return false;
 			if (fullName != null ? !fullName.equals(resume.fullName) : resume.fullName != null) return false;
 			if (contacts != null ? !contacts.equals(resume.contacts) : resume.contacts != null) return false;
-			//return sections != null ? sections.equals(resume.sections) : resume.sections == null; sections.get(OBJECTIVE)
-			// помогло для поиска на какой секции упало
-			if (sections.get(OBJECTIVE) != null ?
-					!sections.get(OBJECTIVE).equals(resume.sections.get(OBJECTIVE))
-					: resume.sections.get(OBJECTIVE) != null) return false;
-			if (sections.get(PERSONAL) != null ?
-					!sections.get(PERSONAL).equals(resume.sections.get(PERSONAL))
-					: resume.sections.get(PERSONAL) != null) return false;
-			if (sections.get(ACHIEVEMENT) != null ?
-					!sections.get(ACHIEVEMENT).equals(resume.sections.get(ACHIEVEMENT))
-					: resume.sections.get(ACHIEVEMENT) != null) return false;
-			if (sections.get(QUALIFICATIONS) != null ?
-					!sections.get(QUALIFICATIONS).equals(resume.sections.get(QUALIFICATIONS))
-					: resume.sections.get(QUALIFICATIONS) != null) return false;
-			if (sections.get(EXPERIENCE) != null ?
-					!sections.get(EXPERIENCE).equals(resume.sections.get(EXPERIENCE))
-					: resume.sections.get(EXPERIENCE) != null) return false;
-			if (sections.get(EDUCATION) != null ?
-					!sections.get(EDUCATION).equals(resume.sections.get(EDUCATION))
-					: resume.sections.get(EDUCATION) != null) return false;
-			
-			return true;
+			return sections != null ? sections.equals(resume.sections) : resume.sections == null;
 		} else {
 			return uuid.equals(resume.uuid);
 		}

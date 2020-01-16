@@ -9,17 +9,17 @@ public class TextSection extends Section {
 	public TextSection() {
 	}
 	
+	public TextSection(String content) {
+		Objects.requireNonNull(content, "content must not be null");
+		this.content = content;
+	}
+	
 	public String getContent() {
 		return content;
 	}
 	
 	public String getTextSection() {
 		return content;
-	}
-	
-	public TextSection(String content) {
-		Objects.requireNonNull(content, "content must not be null");
-		this.content = content;
 	}
 	
 	@Override
