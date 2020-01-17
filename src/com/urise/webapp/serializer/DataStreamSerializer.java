@@ -57,7 +57,7 @@ public class DataStreamSerializer implements StreamSerializer {
 								if (pos.getDescription() != null) {
 									dos.writeUTF(pos.getDescription());
 								} else {
-									dos.writeUTF("?");
+									dos.writeUTF("");
 								}
 							}
 						}
@@ -77,44 +77,52 @@ public class DataStreamSerializer implements StreamSerializer {
 			for (int i = 0; i < size; i++) {
 				resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
 			}
-			resume.addSection(SectionType.valueOf(dis.readUTF()), new TextSection(dis.readUTF()));
-			resume.addSection(SectionType.valueOf(dis.readUTF()), new TextSection(dis.readUTF()));
 			
 			String nameSection;
-			for (int jj = 0; jj < 2; jj++) {
-				nameSection = dis.readUTF();
-				size = dis.readInt();
-				ListSection listSection = new ListSection(new ArrayList<>());
-				
-				for (int i = 0; i < size; i++) {
-					listSection.save(dis.readUTF());
-				}
-				resume.addSection(SectionType.valueOf(nameSection), listSection);
-			}
-			
-			for (int jj = 0; jj < 2; jj++) {
-				nameSection = dis.readUTF();
-				int sizeOrg1 = dis.readInt();
-				List<Organization> organizations = new ArrayList<>();
-				for (int i = 0; i < sizeOrg1; i++) {//loop Organizations
-					Link link = new Link(dis.readUTF(), dis.readUTF());
-					int sizePos1 = dis.readInt();
-					List<Organization.Position> positions = new ArrayList<>();
-					for (int j = 0; j < sizePos1; j++) {//loop Positions
-						LocalDate startDate = LocalDate.parse(dis.readUTF());
-						LocalDate endDate = LocalDate.parse(dis.readUTF());
-						String title = dis.readUTF();
-						String description = dis.readUTF();
-						if (description.equals("?")) {
-							description = null;
+			for (SectionType sectionType : SectionType.values()) {
+				switch (sectionType) {
+					case OBJECTIVE:
+					case PERSONAL:
+						resume.addSection(SectionType.valueOf(dis.readUTF()), new TextSection(dis.readUTF()));
+						break;
+					case ACHIEVEMENT:
+					case QUALIFICATIONS:
+						nameSection = dis.readUTF();
+						size = dis.readInt();
+						ListSection listSection = new ListSection(new ArrayList<>());
+						
+						for (int i = 0; i < size; i++) {
+							listSection.save(dis.readUTF());
 						}
-						positions.add(new Organization.Position(startDate, endDate, title, description));
-					}
-					organizations.add(new Organization(link, positions));
+						resume.addSection(SectionType.valueOf(nameSection), listSection);
+						break;
+					case EXPERIENCE:
+					case EDUCATION:
+						nameSection = dis.readUTF();
+						int sizeOrg1 = dis.readInt();
+						List<Organization> organizations = new ArrayList<>();
+						for (int i = 0; i < sizeOrg1; i++) {//loop Organizations
+							Link link = new Link(dis.readUTF(), dis.readUTF());
+							int sizePos1 = dis.readInt();
+							List<Organization.Position> positions = new ArrayList<>();
+							for (int j = 0; j < sizePos1; j++) {//loop Positions
+								LocalDate startDate = LocalDate.parse(dis.readUTF());
+								LocalDate endDate = LocalDate.parse(dis.readUTF());
+								String title = dis.readUTF();
+								String description = dis.readUTF();
+								if (description.equals("")) {
+									description = null;
+								}
+								positions.add(new Organization.Position(startDate, endDate, title, description));
+							}
+							organizations.add(new Organization(link, positions));
+						}
+						resume.addSection(SectionType.valueOf(nameSection), new OrganizationSection(organizations));
+						break;
 				}
-				resume.addSection(SectionType.valueOf(nameSection), new OrganizationSection(organizations));
 			}
 			return resume;
 		}
 	}
 }
+
