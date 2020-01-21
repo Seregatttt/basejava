@@ -9,6 +9,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import static com.urise.webapp.model.SectionType.valueOf;
+import static com.urise.webapp.model.SectionType.values;
+
 public class DataStreamSerializer implements StreamSerializer {
 	
 	@Override
@@ -19,14 +22,14 @@ public class DataStreamSerializer implements StreamSerializer {
 			
 			Map<ContactType, String> contacts = r.getContacts();
 			
-			SaveSection ss = (SaveSection<Map.Entry<ContactType, String>>) entry -> {
-				dos.writeUTF(entry.getKey().name());
-				dos.writeUTF(entry.getValue());
-			};
-			writeWithExeption(contacts.entrySet(), dos, ss);
+			writeWithException(contacts.entrySet(), dos, contact -> {
+				dos.writeUTF(contact.getKey().name());
+				dos.writeUTF(contact.getValue());
+			});
 			
 			Map<SectionType, Section> sections = r.getSections();
-			for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
+			
+			writeWithException(sections.entrySet(), dos, entry -> {
 				dos.writeUTF(entry.getKey().name());
 				switch (entry.getKey()) {
 					case OBJECTIVE:
@@ -37,32 +40,24 @@ public class DataStreamSerializer implements StreamSerializer {
 					case ACHIEVEMENT:
 					case QUALIFICATIONS:
 						ListSection listSection = (ListSection) entry.getValue();
-						ss = (SaveSection<String>) entry1 -> dos.writeUTF(entry1);
-						writeWithExeption(listSection.getList(), dos, ss);
+						writeWithException(listSection.getList(), dos, dos::writeUTF);
 						break;
 					case EXPERIENCE:
 					case EDUCATION:
 						OrganizationSection organizationSection = (OrganizationSection) entry.getValue();
-						ss = (SaveSection<Organization>) entry12 -> {
-							dos.writeUTF(entry12.getHomePage().getName());
-							dos.writeUTF(entry12.getHomePage().getUrl());
-							dos.writeInt(entry12.getPositions().size());
-							for (Organization.Position pos : entry12.getPositions()) {
+						writeWithException(organizationSection.getOrganizations(), dos, (Organization org) -> {
+							writeWhenNull(org.getHomePage().getName(), dos);
+							writeWhenNull(org.getHomePage().getUrl(), dos);
+							writeWithException(org.getPositions(), dos, pos -> {
 								dos.writeUTF(pos.getStartDate().toString());
 								dos.writeUTF(pos.getEndDate().toString());
 								dos.writeUTF(pos.getTitle());
-								
-								if (pos.getDescription() != null) {
-									dos.writeUTF(pos.getDescription());
-								} else {
-									dos.writeUTF("");
-								}
-							}
-						};
-						writeWithExeption(organizationSection.getOrganizations(), dos, ss);
+								writeWhenNull(pos.getDescription(), dos);
+							});
+						});
 						break;
 				}
-			}
+			});
 		}
 	}
 	
@@ -76,8 +71,8 @@ public class DataStreamSerializer implements StreamSerializer {
 			for (int i = 0; i < size; i++) {
 				resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
 			}
-			
-			for (SectionType sectionType : SectionType.values()) {
+			int sizeSections = dis.readInt();
+			for (SectionType sectionType : values()) {
 				String nameSection = null;
 				Section section = null;
 				switch (sectionType) {
@@ -122,7 +117,7 @@ public class DataStreamSerializer implements StreamSerializer {
 						section = new OrganizationSection(organizations);
 						break;
 				}
-				resume.addSection(SectionType.valueOf(nameSection), section);
+				resume.addSection(valueOf(nameSection), section);
 			}
 			return resume;
 		}
@@ -131,12 +126,21 @@ public class DataStreamSerializer implements StreamSerializer {
 	@FunctionalInterface
 	interface SaveSection<T> {
 		void doSave(T t) throws IOException;
+		
 	}
 	
-	private <T> void writeWithExeption(Collection<T> collection, DataOutputStream dos, SaveSection<T> ss) throws IOException {
+	private <T> void writeWithException(Collection<T> collection, DataOutputStream dos, SaveSection<T> ss) throws IOException {
 		dos.writeInt(collection.size());
 		for (T item : collection) {
 			ss.doSave(item);
+		}
+	}
+	
+	private void writeWhenNull(String str, DataOutputStream dos) throws IOException {
+		if (str != null) {
+			dos.writeUTF(str);
+		} else {
+			dos.writeUTF("");
 		}
 	}
 }
