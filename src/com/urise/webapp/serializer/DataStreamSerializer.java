@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.urise.webapp.model.SectionType.valueOf;
-import static com.urise.webapp.model.SectionType.values;
 
 public class DataStreamSerializer implements StreamSerializer {
 	
@@ -68,27 +67,22 @@ public class DataStreamSerializer implements StreamSerializer {
 			String fullName = dis.readUTF();
 			Resume resume = new Resume(uuid, fullName);
 			readWithException(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
-			
-			int sizeSections = dis.readInt();
-			for (SectionType sectionType : values()) {
-				String nameSection = null;
+			readWithException(dis, () -> {
+				String nameSection = dis.readUTF();
 				Section section = null;
-				switch (sectionType) {
+				switch (SectionType.valueOf(nameSection)) {
 					case OBJECTIVE:
 					case PERSONAL:
-						nameSection = dis.readUTF();
 						section = new TextSection(dis.readUTF());
 						break;
 					case ACHIEVEMENT:
 					case QUALIFICATIONS:
-						nameSection = dis.readUTF();
 						ListSection listSection = new ListSection(new ArrayList<>());
 						readWithException(dis, () -> listSection.save(dis.readUTF()));
 						section = listSection;
 						break;
 					case EXPERIENCE:
 					case EDUCATION:
-						nameSection = dis.readUTF();
 						List<Organization> organizations = new ArrayList<>();
 						readWithException(dis, () -> {
 							Link link = new Link(dis.readUTF(), readWhenNull(dis));
@@ -106,7 +100,7 @@ public class DataStreamSerializer implements StreamSerializer {
 						break;
 				}
 				resume.addSection(valueOf(nameSection), section);
-			}
+			});
 			return resume;
 		}
 	}
