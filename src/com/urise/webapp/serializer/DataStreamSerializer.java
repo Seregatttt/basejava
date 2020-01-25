@@ -68,9 +68,9 @@ public class DataStreamSerializer implements StreamSerializer {
 			Resume resume = new Resume(uuid, fullName);
 			readWithException(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
 			readWithException(dis, () -> {
-				String nameSection = dis.readUTF();
 				Section section = null;
-				switch (SectionType.valueOf(nameSection)) {
+				SectionType sectionType = SectionType.valueOf(dis.readUTF());
+				switch (sectionType) {
 					case OBJECTIVE:
 					case PERSONAL:
 						section = new TextSection(dis.readUTF());
@@ -99,7 +99,7 @@ public class DataStreamSerializer implements StreamSerializer {
 						section = new OrganizationSection(organizations);
 						break;
 				}
-				resume.addSection(valueOf(nameSection), section);
+				resume.addSection(sectionType, section);
 			});
 			return resume;
 		}
