@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -15,12 +12,17 @@ public class MainStream {
 	}
 
 	private static int minNumber(List<Integer> integers) {
-		int s = integers
+		Optional<Integer> s = integers
 				.stream()
 				.distinct()
 				.sorted()
-				.reduce((s1, s2) -> s1 * 10 + s2).get();
-		return s;
+				.reduce((s1, s2) -> s1 * 10 + s2);
+
+		if (s.isPresent()) {
+			return s.get();
+		} else {
+			return 0;
+		}
 	}
 
 	private static List<Integer> oddOrEven(List<Integer> integers) {
@@ -28,11 +30,13 @@ public class MainStream {
 				.stream()
 				.collect(Collectors.partitioningBy((p) -> p % 2 == 0));
 
-		if (Stream.concat(groupListNumber.get(true).stream(), groupListNumber.get(false).stream())
-				.mapToInt(integer -> integer).sum() % 2 == 0) {
-			return new ArrayList<>(groupListNumber.get(true));
+		Optional<Integer> sum = Stream.concat(groupListNumber.get(true).stream(), groupListNumber.get(false).stream())
+				.reduce((s1, s2) -> s1 + s2);
+
+		if (sum.get() % 2 == 0) {
+			return groupListNumber.get(true);
 		} else {
-			return new ArrayList<>(groupListNumber.get(false));
+			return groupListNumber.get(false);
 		}
 	}
 
