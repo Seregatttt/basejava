@@ -7,7 +7,6 @@ public class MainStream {
 	public static void main(String[] args) {
 
 		System.out.println(minNumber(new ArrayList<>(Arrays.asList(1, 1, 2, 2, 3, 3, 1, 1, 1, 1))));
-
 		System.out.println(oddOrEven(new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5))));
 	}
 
