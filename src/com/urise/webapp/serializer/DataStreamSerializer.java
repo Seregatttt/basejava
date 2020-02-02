@@ -9,8 +9,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import static com.urise.webapp.model.SectionType.valueOf;
-
 public class DataStreamSerializer implements StreamSerializer {
 	
 	@Override

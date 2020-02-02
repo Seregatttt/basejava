@@ -1,3 +1,4 @@
+package com.urise;
 
 import com.urise.webapp.model.Resume;
 

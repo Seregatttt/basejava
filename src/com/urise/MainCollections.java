@@ -1,3 +1,5 @@
+package com.urise;
+
 import com.urise.webapp.model.Resume;
 
 import java.util.*;

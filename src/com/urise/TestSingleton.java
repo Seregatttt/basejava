@@ -1,3 +1,5 @@
+package com.urise;
+
 import com.urise.webapp.model.SectionType;
 
 public class TestSingleton {

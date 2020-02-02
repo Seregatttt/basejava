@@ -1,3 +1,5 @@
+package com.urise;
+
 public class TestThreadDeadLock {
 	public static Object LOCK1 = new Object();
 	public static Object LOCK2 = new Object();

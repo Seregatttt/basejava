@@ -1,3 +1,5 @@
+package com.urise;
+
 public class MainString {
 	
 	public static void main(String[] args) {

@@ -1,3 +1,5 @@
+package com.urise;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.*;
@@ -118,7 +120,7 @@ public class MainConcurrency {
 
 	private void inc() {
 //        synchronized (this) {
-//        synchronized (MainConcurrency.class) {
+//        synchronized (com.urise.MainConcurrency.class) {
 //        WRITE_LOCK.lock();
 //        try {
 		atomicCounter.incrementAndGet();
