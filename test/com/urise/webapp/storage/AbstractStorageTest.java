@@ -15,7 +15,7 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
-	protected static final File STORAGE_DIR = Config.get().getStorageDir();//new File("C:\\projects\\storage");
+	protected static final File STORAGE_DIR = Config.get().getStorageDir();
 	protected static final String DB_URL = Config.get().getDb_url();
 	protected static final String DB_USER = Config.get().getDb_user();
 	protected static final String DB_PASSWORD = Config.get().getDb_password();

@@ -24,9 +24,11 @@ public class Config {
 		try (InputStream is = new FileInputStream(PROPS)) {
 			props.load(is);
 			storageDir = new File(props.getProperty("storage.dir"));
+
 			db_url = props.getProperty("db.url");
 			db_user = props.getProperty("db.user");
 			db_password = props.getProperty("db.password");
+
 		} catch (IOException e) {
 			throw new IllegalStateException("Invalid config file " + PROPS.getAbsolutePath());
 		}
