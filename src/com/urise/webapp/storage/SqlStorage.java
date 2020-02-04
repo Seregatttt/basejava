@@ -26,7 +26,7 @@ public class SqlStorage implements Storage {
 
 	@Override
 	public Resume get(String uuid) {
-		Resume r = sqlHelper.executeSql("SELECT * FROM resume r WHERE r.uuid =?", uuid, ps -> {
+		return sqlHelper.executeSql("SELECT * FROM resume r WHERE r.uuid =?", uuid, ps -> {
 			ps.setString(1, uuid);
 			ResultSet rs = ps.executeQuery();
 			if (!rs.next()) {
@@ -34,7 +34,6 @@ public class SqlStorage implements Storage {
 			}
 			return new Resume(uuid, rs.getString("full_name"));
 		});
-		return r;
 	}
 
 	@Override
@@ -74,8 +73,7 @@ public class SqlStorage implements Storage {
 
 	@Override
 	public List<Resume> getAllSorted() {
-		String sql = "SELECT uuid uuid, full_name full_name FROM resume r ORDER BY uuid ";
-		return sqlHelper.executeSql(sql, null, ps -> {
+		return sqlHelper.executeSql("SELECT uuid uuid, full_name full_name FROM resume r ORDER BY uuid ", null, ps -> {
 			ResultSet rs = ps.executeQuery();
 			List<Resume> list = new ArrayList<>();
 			while (rs.next()) {
@@ -87,14 +85,12 @@ public class SqlStorage implements Storage {
 
 	@Override
 	public int size() {
-		String sql = "SELECT count(*) cnt FROM resume ";
-		Integer cnt = sqlHelper.executeSql(sql, null, ps -> {
+		return sqlHelper.executeSql("SELECT count(*) cnt FROM resume ", null, ps -> {
 			ResultSet rs = ps.executeQuery();
 			if (!rs.next()) {
 				throw new StorageException("error is found in size()");
 			}
 			return rs.getInt(1);
 		});
-		return cnt;
 	}
 }
