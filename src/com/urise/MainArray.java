@@ -7,6 +7,7 @@ import com.urise.webapp.storage.Storage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -57,10 +58,14 @@ public class MainArray {
 					printAll();
 					break;
 				case "get":
-					if (ARRAY_STORAGE.get(param) == null) {
-						System.out.println("uuid " + param + " not found");
-					} else {
-						System.out.println(ARRAY_STORAGE.get(param).toString());
+					try {
+						if (ARRAY_STORAGE.get(param) == null) {
+							System.out.println("uuid " + param + " not found");
+						} else {
+							System.out.println(ARRAY_STORAGE.get(param).toString());
+						}
+					} catch (SQLException e) {
+						e.printStackTrace();
 					}
 					break;
 				case "clear":
