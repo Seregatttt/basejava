@@ -1,10 +1,9 @@
 package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.model.SectionType;
 
 public class ResumeTestData {
-	
+
 	public static Resume getResume(String uuid, String fullName) {
 		Resume resume = new Resume(uuid, fullName);
 	/*	resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
@@ -51,10 +50,9 @@ public class ResumeTestData {
 						"Aspirant", null));
 		objectSection = new OrganizationSection(org);
 		resume.addSection(SectionType.EDUCATION, objectSection);*/
-		
-		System.out.println(resume.getSection(SectionType.EDUCATION));
+
 		return resume;
 	}
-	
-	
+
+
 }

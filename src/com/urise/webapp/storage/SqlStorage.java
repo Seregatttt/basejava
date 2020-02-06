@@ -3,6 +3,7 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.sql.SqlHelper;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -41,8 +42,7 @@ public class SqlStorage implements Storage {
 		sqlHelper.executeSql("UPDATE  resume  SET full_name =? WHERE uuid =?", r.getUuid(), ps -> {
 			ps.setString(1, r.getFullName());
 			ps.setString(2, r.getUuid());
-			int row = ps.executeUpdate();
-			if (row == 0) {
+			if (ps.executeUpdate() == 0) {
 				throw new NotExistStorageException(r.getUuid());
 			}
 			return null;
@@ -51,7 +51,7 @@ public class SqlStorage implements Storage {
 
 	@Override
 	public void save(Resume r) {
-		sqlHelper.executeSql("INSERT INTO resume (uuid, full_name) VALUES (?,?)", r.getUuid(), ps -> {
+		sqlHelper.<Void>executeSql("INSERT INTO resume (uuid, full_name) VALUES (?,?)", r.getUuid(), ps -> {
 			ps.setString(1, r.getUuid());
 			ps.setString(2, r.getFullName());
 			ps.execute();
@@ -63,8 +63,7 @@ public class SqlStorage implements Storage {
 	public void delete(String uuid) {
 		sqlHelper.executeSql("DELETE  FROM resume r WHERE r.uuid =?", uuid, ps -> {
 			ps.setString(1, uuid);
-			int row = ps.executeUpdate();
-			if (row == 0) {
+			if (ps.executeUpdate() == 0) {
 				throw new NotExistStorageException(uuid);
 			}
 			return null;
