@@ -22,10 +22,7 @@ public class SqlStorage implements Storage {
 
 	@Override
 	public void clear() {
-		sqlHelper.executeSql("DELETE FROM resume ", null, ps -> {
-			ps.execute();
-			return null;
-		});
+		sqlHelper.executeSql("DELETE FROM resume ");
 	}
 
 	@Override
@@ -102,7 +99,7 @@ public class SqlStorage implements Storage {
 			ResultSet rs = ps.executeQuery();
 			List<Resume> list = new ArrayList<>();
 			while (rs.next()) {
-				list.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
+				list.add(get(rs.getString("uuid")));
 			}
 			return list;
 		});

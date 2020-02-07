@@ -1,12 +1,15 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.model.Resume;
+import com.urise.webapp.model.*;
+
+import java.time.Month;
+import java.util.ArrayList;
 
 public class ResumeTestData {
 
 	public static Resume getResume(String uuid, String fullName) {
 		Resume resume = new Resume(uuid, fullName);
-	/*	resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
+		resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
 		resume.addContact(ContactType.SKYPE, "grigory.kislin");
 		resume.addContact(ContactType.MAIL, "gkislin@yandex.ru");
 		resume.addContact(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
@@ -16,7 +19,7 @@ public class ResumeTestData {
 		System.out.println(resume.getFullName());
 		System.out.println(resume.getContact(ContactType.PHONE));
 		
-		Section section = new TextSection("MyObjectiveInfo");
+		/*Section section = new TextSection("MyObjectiveInfo");
 		resume.addSection(SectionType.OBJECTIVE, section);
 		section = new TextSection("MyPersonalInfo");
 		resume.addSection(SectionType.PERSONAL, section);
