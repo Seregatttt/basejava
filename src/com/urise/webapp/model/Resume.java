@@ -63,8 +63,12 @@ public class Resume implements Comparable<Resume>, Serializable {
 	public void addContact(ContactType contactType, String value) {
 		this.contacts.put(contactType, value);
 	}
-	
-	public Section getSection(SectionType type) {
+
+	public void delContact(ContactType contactType) {
+		this.contacts.remove(contactType);
+	}
+
+		public Section getSection(SectionType type) {
 		return sections.get(type);
 	}
 	
