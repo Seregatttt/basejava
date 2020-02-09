@@ -105,6 +105,7 @@ public class SqlStorage implements Storage {
 						Resume r = storage.computeIfAbsent(rs.getString("uuid"),
 								key -> new Resume(uuid, full_name));
 						addContact(rs, r);
+						storage.computeIfPresent(uuid, (key, value) -> r);
 					}
 					return new ArrayList<>(storage.values());
 				});
