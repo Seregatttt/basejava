@@ -8,9 +8,9 @@ import com.urise.webapp.sql.SqlHelper;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class SqlStorage implements Storage {
 	private SqlHelper sqlHelper;
@@ -98,14 +98,12 @@ public class SqlStorage implements Storage {
 				, null,
 				ps -> {
 					ResultSet rs = ps.executeQuery();
-					Map<String, Resume> storage = new TreeMap<>();
+					Map<String, Resume> storage = new LinkedHashMap<>();
 					while (rs.next()) {
-						if (!storage.containsKey(rs.getString("uuid"))) {
-							Resume r = new Resume(rs.getString("uuid"), rs.getString("full_name"));
-							storage.put(r.getUuid(), r);
-						}
-						Resume r = storage.get(rs.getString("uuid"));
-
+						String uuid = rs.getString("uuid");
+						String full_name = rs.getString("full_name");
+						Resume r = storage.computeIfAbsent(rs.getString("uuid"),
+								key -> new Resume(uuid, full_name));
 						addContact(rs, r);
 					}
 					return new ArrayList<>(storage.values());
