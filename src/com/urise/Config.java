@@ -19,7 +19,7 @@ public class Config {
 		return INSTANCE;
 	}
 
-	private Config() {
+	public Config() {
 		try (InputStream is = new FileInputStream(PROPS)) {
 			Properties props = new Properties();
 			props.load(is);

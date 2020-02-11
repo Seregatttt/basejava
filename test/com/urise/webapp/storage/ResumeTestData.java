@@ -1,9 +1,7 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.model.*;
-
-import java.time.Month;
-import java.util.ArrayList;
+import com.urise.webapp.model.ContactType;
+import com.urise.webapp.model.Resume;
 
 public class ResumeTestData {
 
@@ -18,7 +16,7 @@ public class ResumeTestData {
 		resume.addContact(ContactType.HOME_PAGE, "http://gkislin.ru/");
 		System.out.println(resume.getFullName());
 		System.out.println(resume.getContact(ContactType.PHONE));
-		/*
+/*
 		Section section = new TextSection("MyObjectiveInfo");
 		resume.addSection(SectionType.OBJECTIVE, section);
 		section = new TextSection("MyPersonalInfo");
@@ -33,7 +31,7 @@ public class ResumeTestData {
 		listSection.save("MyQualificationInfo1");
 		listSection.save("MyQualificationInfo2");
 		resume.addSection(SectionType.QUALIFICATIONS, listSection);
-		
+
 		String nameOrg = "Java Online Projects";
 		String url = "www.leningrad.ru";
 		String title = "Author project";
