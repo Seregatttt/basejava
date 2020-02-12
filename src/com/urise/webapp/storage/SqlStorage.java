@@ -6,10 +6,7 @@ import com.urise.webapp.model.*;
 import com.urise.webapp.sql.SqlHelper;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SqlStorage implements Storage {
 	private SqlHelper sqlHelper;
@@ -34,6 +31,8 @@ public class SqlStorage implements Storage {
 						"    SELECT * FROM resume r " +
 						" LEFT JOIN contact c " +
 						"        ON r.uuid = c.resume_uuid " +
+						" LEFT JOIN section s " +
+						"        ON r.uuid = s.resume_uuid " +
 						"     WHERE r.uuid =?", uuid,
 				ps -> {
 					ps.setString(1, uuid);
@@ -46,7 +45,10 @@ public class SqlStorage implements Storage {
 
 					do {
 						addContact(rs, r);
+						addSection(rs, r);
 					} while (rs.next());
+
+
 					return r;
 				});
 	}
@@ -64,6 +66,10 @@ public class SqlStorage implements Storage {
 			}
 			deleteContacts(r, conn);
 			insertContacts(r, conn);
+
+			deleteSection(r, conn);
+			insertSections(r, conn);
+
 			return null;
 		});
 	}
@@ -77,7 +83,7 @@ public class SqlStorage implements Storage {
 						ps.execute();
 					}
 					insertContacts(r, conn);
-					//insertSections(r, conn);
+					insertSections(r, conn);
 					return null;
 				}
 		);
@@ -109,11 +115,18 @@ public class SqlStorage implements Storage {
 					try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM contact c ")) {
 						ResultSet rs = ps.executeQuery();
 						while (rs.next()) {
-							String uuid = rs.getString("resume_uuid");
-							Resume resume = storage.get(uuid);
-							Resume r = storage.computeIfAbsent(rs.getString("resume_uuid"),
-									key -> new Resume(uuid, resume.getFullName()));
-							addContact(rs, r);
+							Resume resume = storage.get(rs.getString("resume_uuid"));
+							addContact(rs, resume);
+							storage.put(rs.getString("resume_uuid"), resume);
+						}
+					}
+
+					try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM section s ")) {
+						ResultSet rs = ps.executeQuery();
+						while (rs.next()) {
+							Resume resume = storage.get(rs.getString("resume_uuid"));
+							addSection(rs, resume);
+							storage.put(rs.getString("resume_uuid"), resume);
 						}
 					}
 					return new ArrayList<>(storage.values());
@@ -129,6 +142,25 @@ public class SqlStorage implements Storage {
 		ContactType type = ContactType.valueOf(rs.getString("type"));
 		r.addContact(type, value);
 	}
+
+	private void addSection(ResultSet rs, Resume r) throws SQLException {
+		String value = rs.getString("section_value");
+		if (value == null) {
+			return;
+		}
+		SectionType sectionType = SectionType.valueOf(rs.getString("section_type"));
+		switch (sectionType) {
+			case OBJECTIVE:
+			case PERSONAL:
+				r.addSection(sectionType, new TextSection(value));
+				break;
+			case ACHIEVEMENT:
+			case QUALIFICATIONS:
+				r.addSection(sectionType, new ListSection(Arrays.asList(value.split("\n"))));
+				break;
+		}
+	}
+
 
 	@Override
 	public int size() {
@@ -148,6 +180,13 @@ public class SqlStorage implements Storage {
 		}
 	}
 
+	private void deleteSection(Resume r, Connection conn) throws SQLException {
+		try (PreparedStatement ps = conn.prepareStatement("DELETE FROM section WHERE resume_uuid =?")) {
+			ps.setString(1, r.getUuid());
+			ps.execute();
+		}
+	}
+
 	private void insertContacts(Resume r, Connection conn) throws SQLException {
 		try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)")) {
 			for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
@@ -162,24 +201,19 @@ public class SqlStorage implements Storage {
 
 	private void insertSections(Resume r, Connection conn) throws SQLException {
 		try (PreparedStatement ps = conn.prepareStatement("" +
-				"INSERT INTO section (resume_uuid, section_type,type_value, value)" +
-				" VALUES (?,?,?,?)")) {
+				"INSERT INTO section (resume_uuid, section_type, section_value)" +
+				" VALUES (?,?,?)")) {
 			for (Map.Entry<SectionType, Section> e : r.getSections().entrySet()) {
 				ps.setString(1, r.getUuid());
-				ps.setString(2, e.getValue().getClass().getSimpleName());
-				ps.setString(3, e.getKey().name());
+				ps.setString(2, e.getKey().name());
 				switch (e.getKey()) {
 					case OBJECTIVE:
 					case PERSONAL:
-						ps.setString(4, ((TextSection) e.getValue()).getContent());
+						ps.setString(3, ((TextSection) e.getValue()).getContent());
 						break;
 					case ACHIEVEMENT:
 					case QUALIFICATIONS:
-						String list_section = "";
-						for (String str : ((ListSection) e.getValue()).getList()) {
-							list_section += str + "\n";
-						}
-						ps.setString(4, list_section);
+						ps.setString(3, String.join("\n", ((ListSection) e.getValue()).getList()));
 						break;
 				}
 				ps.addBatch();
