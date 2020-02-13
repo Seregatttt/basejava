@@ -117,7 +117,6 @@ public class SqlStorage implements Storage {
 						while (rs.next()) {
 							Resume resume = storage.get(rs.getString("resume_uuid"));
 							addContact(rs, resume);
-							storage.put(rs.getString("resume_uuid"), resume);
 						}
 					}
 
@@ -126,12 +125,22 @@ public class SqlStorage implements Storage {
 						while (rs.next()) {
 							Resume resume = storage.get(rs.getString("resume_uuid"));
 							addSection(rs, resume);
-							storage.put(rs.getString("resume_uuid"), resume);
 						}
 					}
 					return new ArrayList<>(storage.values());
 				}
 		);
+	}
+
+	@Override
+	public int size() {
+		return sqlHelper.executeSql("SELECT count(*) cnt FROM resume ", null, ps -> {
+			ResultSet rs = ps.executeQuery();
+			if (!rs.next()) {
+				throw new StorageException("error is found in size()");
+			}
+			return rs.getInt(1);
+		});
 	}
 
 	private void addContact(ResultSet rs, Resume r) throws SQLException {
@@ -159,18 +168,6 @@ public class SqlStorage implements Storage {
 				r.addSection(sectionType, new ListSection(Arrays.asList(value.split("\n"))));
 				break;
 		}
-	}
-
-
-	@Override
-	public int size() {
-		return sqlHelper.executeSql("SELECT count(*) cnt FROM resume ", null, ps -> {
-			ResultSet rs = ps.executeQuery();
-			if (!rs.next()) {
-				throw new StorageException("error is found in size()");
-			}
-			return rs.getInt(1);
-		});
 	}
 
 	private void deleteContacts(Resume r, Connection conn) throws SQLException {
