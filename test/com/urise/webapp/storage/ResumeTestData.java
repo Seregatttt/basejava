@@ -2,6 +2,7 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.*;
 
+import java.time.Month;
 import java.util.ArrayList;
 
 public class ResumeTestData {
@@ -32,7 +33,7 @@ public class ResumeTestData {
 		listSection.save("MyQualificationInfo1");
 		listSection.save("MyQualificationInfo2");
 		resume.addSection(SectionType.QUALIFICATIONS, listSection);
-/*
+
 		String nameOrg = "Java Online Projects";
 		String url = "www.leningrad.ru";
 		String title = "Author project";
@@ -51,7 +52,7 @@ public class ResumeTestData {
 				new Organization.Position(1987, Month.SEPTEMBER, 1993, Month.JULY,
 						"Aspirant", null));
 		objectSection = new OrganizationSection(org);
-		resume.addSection(SectionType.EDUCATION, objectSection);*/
+		resume.addSection(SectionType.EDUCATION, objectSection);
 
 		return resume;
 	}
