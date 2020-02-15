@@ -16,7 +16,7 @@ public interface Storage {
 
 	void save(Resume resume);
 
-	Resume get(String uuid) throws SQLException;
+	Resume get(String uuid) ;
 
 	void delete(String uuid);
 
