@@ -1,8 +1,7 @@
 package com.urise.webapp.web;
 
 import com.urise.Config;
-import com.urise.webapp.model.ContactType;
-import com.urise.webapp.model.Resume;
+import com.urise.webapp.model.*;
 import com.urise.webapp.storage.Storage;
 
 import javax.servlet.ServletConfig;
@@ -11,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ResumeServlet extends HttpServlet {
@@ -34,6 +36,41 @@ public class ResumeServlet extends HttpServlet {
 				r.addContact(type, value);
 			} else {
 				r.getContacts().remove(type);
+			}
+		}
+		for (SectionType type : SectionType.values()) {
+			switch (type) {
+				case OBJECTIVE:
+				case PERSONAL:
+					String info2 = request.getParameter(type.name());
+					r.addSection(type, new TextSection(info2));
+					break;
+				case ACHIEVEMENT:
+				case QUALIFICATIONS:
+					String[] sections = request.getParameterValues(type.name());
+					ListSection listSection2 = new ListSection(new ArrayList<>());
+					for (String str : sections) {
+						listSection2.save(str);
+					}
+					r.addSection(type, listSection2);
+					break;
+				case EXPERIENCE:
+				case EDUCATION:
+					String[] sections2 = request.getParameterValues(type.name());
+					String nameOrg = sections2[0];
+					String urlOrg = sections2[1];
+					List<Organization.Position> positions = new ArrayList<>();
+
+					for (int i = 2; i < sections2.length; i = i + 4) {
+						LocalDate startDate = LocalDate.parse(sections2[i]);
+						LocalDate endDate = LocalDate.parse(sections2[i + 1]);
+						String title = sections2[i + 2];
+						String description = sections2[i + 3];
+						positions.add(new Organization.Position(startDate, endDate, title, description));
+					}
+					r.addSection(type, new OrganizationSection(new Organization(new Link(nameOrg, urlOrg), positions)));
+					break;
+
 			}
 		}
 		storage.update(r);

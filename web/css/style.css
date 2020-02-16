@@ -1,3 +1,15 @@
+my_dt{
+    display: inline;
+    width: 220px;
+}
+
+my_dd {
+    display: inline;
+    margin-left: 8px;
+    vertical-align: top;
+}
+
+
 section {
     width: 900px;
     margin: auto;
@@ -22,13 +34,13 @@ footer {
 
 dl {
     background: none repeat scroll 0 0 #FAFAFA;
-    margin: 8px 0;
+    margin: 20px 0;
     padding: 0;
 }
 
 dt {
     display: inline-block;
-    width: 170px;
+    width: 220px;
 }
 
 dd {

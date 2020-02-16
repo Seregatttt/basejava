@@ -23,39 +23,31 @@ public class ResumeTestData {
 		resume.addSection(SectionType.OBJECTIVE, section);
 		section = new TextSection("MyPersonalInfo");
 		resume.addSection(SectionType.PERSONAL, section);
-		
+
 		ListSection listSection = new ListSection(new ArrayList<>());
 		listSection.save("MyAchievementInfo1");
 		listSection.save("MyAchievementInfo2");
 		resume.addSection(SectionType.ACHIEVEMENT, listSection);
-		
+
 		listSection = new ListSection(new ArrayList<>());
 		listSection.save("MyQualificationInfo1");
 		listSection.save("MyQualificationInfo2");
 		resume.addSection(SectionType.QUALIFICATIONS, listSection);
 
-		String nameOrg = "Java Online Projects";
-		String url = "www.leningrad.ru";
-		String title = "Author project";
-		String description = "Creating project";
-		Organization org =
-				new Organization(nameOrg, url,
-						new Organization.Position(2013, Month.OCTOBER, 2019, Month.DECEMBER, title, null));
-		OrganizationSection objectSection = new OrganizationSection(org);
-		resume.addSection(SectionType.EXPERIENCE, objectSection);
-		
-		org = new Organization(
-				"University SP",
-				"www.leningrad.ru",
-				new Organization.Position(1993, Month.SEPTEMBER, 1996, Month.JULY,
-						"Inginer", description),
-				new Organization.Position(1987, Month.SEPTEMBER, 1993, Month.JULY,
-						"Aspirant", null));
-		objectSection = new OrganizationSection(org);
-		resume.addSection(SectionType.EDUCATION, objectSection);
+		resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(new Organization(
+				"Java Online Projects", "url_org1",
+				new Organization.Position(2013, Month.OCTOBER, 2019, Month.DECEMBER,
+						"Author project", "description0"),
+				new Organization.Position(2011, Month.OCTOBER, 2012, Month.DECEMBER,
+						"position1", "description1")
+		)));
 
+		resume.addSection(SectionType.EDUCATION, new OrganizationSection(new Organization(
+				"University SP", "www.leningrad.ru",
+				new Organization.Position(1993, Month.SEPTEMBER, 1996, Month.JULY,
+						"Inginer", "description2"),
+				new Organization.Position(1987, Month.SEPTEMBER, 1993, Month.JULY,
+						"Aspirant", "description3"))));
 		return resume;
 	}
-
-
 }
