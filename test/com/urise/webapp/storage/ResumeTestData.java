@@ -38,16 +38,16 @@ public class ResumeTestData {
 				"Java Online Projects", "url_org1",
 				new Organization.Position(2013, Month.OCTOBER, 2019, Month.DECEMBER,
 						"Author project", "description0"),
-				new Organization.Position(2011, Month.OCTOBER, 2012, Month.DECEMBER,
-						"position1", "description1")
-		)));
+				new Organization.Position(2013, Month.OCTOBER, 2019, Month.DECEMBER,
+						"position1", "description0")
+				)));
 
 		resume.addSection(SectionType.EDUCATION, new OrganizationSection(new Organization(
 				"University SP", "www.leningrad.ru",
 				new Organization.Position(1993, Month.SEPTEMBER, 1996, Month.JULY,
-						"Inginer", "description2"),
+						"Inginer", "description1"),
 				new Organization.Position(1987, Month.SEPTEMBER, 1993, Month.JULY,
-						"Aspirant", "description3"))));
+						"Aspirant", "description2"))));
 		return resume;
 	}
 }

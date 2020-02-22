@@ -39,14 +39,11 @@ dl {
 }
 
 dt {
-    display: inline-block;
-    width: 220px;
+    display: inline-block; width: 220px;
 }
 
 dd {
-    display: inline-block;
-    margin-left: 8px;
-    vertical-align: top;
+    display: inline-block; margin-left: 8px;vertical-align: top;
 }
 
 h2, h3 {
